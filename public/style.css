@@ -1,0 +1,747 @@
+:root {
+    --primary: #6a3cc0;
+       
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+
+}
+
+ul {
+    list-style: none;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: .7rem;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+body {
+    
+    background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
+    font-family: helvetica, sans-serif;
+}
+
+/* Estados */
+
+.pagado,
+.activo {
+    color: #1fcf1f;
+    padding: 3px 0px 3px 10px;
+    text-transform: capitalize;
+}
+
+/* 
+Bootstrap 4 Customs 
+-----------------------*/
+
+.form-check-label {
+    margin-bottom: 0.5em !important;
+}
+
+
+/* Styles */
+
+.form-custom {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 2px 0px 2px 5px;
+    margin: 2px 0;
+    font-size: 14px;
+    width: 100%;
+}
+
+.enabled {
+    background: green !important;
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+.disabled {
+    background: red !important;
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+.Error {
+    background: red;
+    color: white;
+    margin-top: 10px;
+    border-radius: 4px;
+    padding: 3px 0px 3px 5px;
+}
+
+.Completado {
+    background: green;
+    color: white;
+    margin-top: 10px;
+    border-radius: 4px;
+    padding: 3px 0px 3px 5px;
+}
+
+
+/*Clase Contenido general */
+
+.general-title {
+    background: #92c7ff !important;
+    margin-bottom: 0;
+    height: 40px;
+    font-size: 16px;
+    border-radius: 3px 3px 0px 0px;
+    line-height: 40px;
+    padding-left: 10px;
+    background: #cccccc;
+}
+
+.generalContainer {
+    margin-bottom: 20px;
+    padding: 30px 10px 30px 10px;
+    box-shadow: 0px 4px 8px -6px;
+    border-radius: 5px;
+    background: white;
+    width: 100%;
+}
+
+
+.generalContainer-medium {
+    margin-bottom: 20px;
+    padding: 30px 10px 30px 10px;
+    box-shadow: 0px 4px 8px -6px;
+    border-radius: 5px;
+    background: white;
+    width: 50%;
+}
+
+/*
+*Clase detalle de compras
+---------------------------------------*/
+
+.DetalleTemp {
+    background: white;
+    border-radius: 3px;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+} 
+
+.DetalleTemp th td {
+    padding-left: 5px;
+}
+
+.DetalleTemp thead th {
+    font-size: 13px;
+    height: 3em;
+    background: #eaeaea;
+    color: black;
+}
+
+
+.DetalleTemp tbody td  {
+   
+    height: 2.5em;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: white;
+}
+
+
+/* 
+Contenedor 
+---------------------------------------*/
+
+.wrap {
+    width: 82%;
+    float: right;
+    margin-top: 20px;
+    padding: 0 19px;
+}
+
+.main {
+    overflow: auto;
+    height: 85vh;
+}
+
+
+.main::-webkit-scrollbar {
+    width: 5px;
+    background-color: #21D4FD;
+    background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
+}
+
+.main::-webkit-scrollbar-track-piece {
+    color: green;
+}
+
+/* 
+Sidebar 
+*-----------------------------*/
+
+.sidebar {
+    width: 250px;
+    background: #272727;
+    height: 100vh;
+    float: left;
+    overflow: auto;
+}
+
+.app-menu  {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+    background-color: #21D4FD;
+    background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
+        
+}
+
+.sidebar::-webkit-scrollbar-track-piece { color: green; }
+
+.add {
+    display: none;
+    font-size: 16px;
+    margin-top: 3px;
+    color: white;
+
+}
+
+.app-menu span:hover .add {
+    display: block;
+
+}
+
+.app-menu span{
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    font-size: 14px;
+    padding: 15px;
+    margin: 0 15px;
+    border-bottom: 1px solid #2f2f2f;
+    cursor: pointer;
+}
+
+.logo {
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    margin: 0 15px;
+    color: white;
+    font-size: 1.7em;
+    text-transform: uppercase;
+    border-bottom: 1px solid #2f2f2f;
+}
+
+/* Menú desplegable*/
+
+.accordion {
+    width: 100%;
+    max-width: 360px;
+    margin: 30px auto 20px;
+    background: #272727;
+}
+
+.accordion .link a {  color: white; }
+
+.accordion .link {
+   cursor: pointer;
+   padding: 15px 15px 15px 42px;
+   color: white;
+   font-size: 14px;
+   font-weight: 600;
+   position: relative;
+   -webkit-transition: all 0.4s ease;
+   -o-transition: all 0.4s ease;
+   transition: all 0.4s ease;
+}
+
+.accordion .link:hover {
+    background: #3d3d3d;
+   
+ }
+ 
+.accordion li.open .link {
+   color: #6a3cc0;
+}
+
+.accordion li.open i {
+   color: #6a3cc0;
+}
+
+.fa-chevron-down {
+    position: absolute;
+    right: 22px;
+    top: 20px;
+    /* color: #595959; */
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+
+.accordion li.open .fa-chevron-down {
+   -webkit-transform: rotate(180deg);
+   -ms-transform: rotate(180deg);
+   -o-transform: rotate(180deg);
+   transform: rotate(180deg);
+}
+
+.accordion li.default .submenu {display: block;}
+
+/**
+* Submenu
+-----------------------------*/
+
+.submenu {
+    display: none;
+    background: #444359;
+    font-size: 14px;
+}
+
+.submenu a {
+    display: block;
+    text-decoration: none;
+    color: #d9d9d9;
+    padding: 12px;
+    padding-left: 42px;
+    -webkit-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+}
+
+.submenu a:hover {
+    background: #6a3cc0;
+    color: #FFF;
+    text-decoration: none;
+}
+
+.open{
+    display: block;
+}
+
+/* ADMIN BAR 
+----------------------------------------*/
+
+/* .admin-bar::before {
+    content: '';
+    position: absolute;
+} */
+
+.admin-bar {
+    background: white;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    box-shadow: 0px 1px 5px -2px black;
+}
+
+/* .admin {
+    float: right;
+    font-size: 14px;
+    margin-right: 30px;
+} */
+
+.admin a {
+    color: black;
+}
+
+.option {
+    display: flex;
+    padding-top: 13px;
+}
+
+.menu-option {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    font-size: 2em;
+    line-height: 60px;
+    cursor: pointer;
+}
+
+.nav-option {
+    display: none;
+    z-index: 1;
+    position: absolute;
+    bottom: 29em;
+    width: 150px;
+   background: #272727;
+}
+
+.nav-option li a{
+    color: white;
+    font-size: 14px;
+    padding: 10px 0px 11px 10px;
+}
+
+.nav-option li:hover{
+    background: #4e4e4e;
+}
+
+.form-search {
+    height: 32px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding-left: 10px;
+    margin-left: 10px;
+}
+
+/*
+* Inicio 
+-----------------------------*/
+
+
+.nav {
+    display: flex;
+    background: white;
+    width: 10em;
+    height: 4em;
+
+}
+
+.nav .icon {
+    width: 55px;
+    text-align: center;
+    font-size: 2em;
+    color: black;
+    line-height: 2em;
+    margin-right: 10px;
+}
+
+[icon *="barcode"] {
+    background: purple;
+}
+
+[icon *="store"] {
+    background: orange;
+}
+
+[icon *="stock"] {
+    background: green;
+}
+
+[icon *="users"] {
+    background: #55aaf0;
+}
+
+
+.nav a {
+    color: black;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.navigation {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+}
+
+/**
+Facturacion 
+-------------------------------------*/
+
+.nofactura {
+    display: flex;
+    justify-content:flex-end
+}
+
+input.no-border {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    height: 26px;
+    width: 80px;
+    text-align: center;
+}
+
+input.invisible-input {
+    border-radius: 10px;
+    height: 26px;
+    background: white;
+    border: none;
+    text-align: center;
+
+}
+
+button.btn-del {
+    border: none;
+    background: none;
+    color: red;
+    font-size: 16px;
+}
+
+.buttons {
+    width: 100%;
+}
+
+.floatButtons input {
+    margin-left: 10px
+}
+
+.floatButtons {
+    overflow: hidden;
+    float: right;
+    margin: 10px 10px 0 10px;
+    /* width: 25em; */
+    display:flex;
+    justify-content: flex-end;
+    
+}
+
+.floatContainer {
+    overflow: hidden;
+    float: right;
+    margin: 0 10px;
+    width: 25em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.totalContainer {
+    font-size: 14px;
+}
+
+.priceContent {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2em;
+}
+
+.finalTotalContent {
+    margin-top: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-top: 1px solid rgba(0,0,0,0.2);
+    font-size: 1.4em;
+}
+
+
+/** Total*/
+
+input.input-border-botton {
+    background: white !important;
+    border: none !important;
+    font-weight: 600 !important;
+    border-radius: 0px !important;
+    border-bottom: 1px solid #ccc !important;
+}
+
+
+.productPrice {
+    display:flex;
+}
+
+.productPrice span {
+    font-size: 1.8em;
+    color: #605f5f;
+
+}
+
+.productPrice input {
+    font-size: 1.8em;
+    background-color:white;
+    border: none;
+}
+
+
+/*
+ Data table 
+ --------------------------------------*/
+
+.section-wrapper {
+    margin: 10px 0;
+}
+
+.section-wrapper h1 {
+    font-size: 2em;
+}
+
+.align-content {
+    height: 50px;
+    line-height: 50px;
+}
+
+.title-info {
+    font-size: 14px;
+    font-weight: 300;
+}
+
+
+.info-sm {
+    font-weight: 300;
+    font-size: 13px;
+    margin: 0;
+}
+
+.action-paid {
+    margin-left: 3px;
+    font-size: 16px;
+    color: #f0a00b;
+}
+
+.action-view {
+    margin-left: 3px;
+    font-size: 16px;
+    color: #0baff0;
+}
+
+.action-edit {
+    margin-left: 3px;
+     font-size: 16px;
+    color: #0bf044;
+}
+
+.action-delete {
+    margin-left: 3px;
+     font-size: 16px;
+    color: #fc0e0e;
+    cursor: pointer;
+}
+
+#delete {
+    color: red;
+    cursor: pointer !important;
+}
+
+#delete:hover {
+    color: rgb(160, 27, 27);
+}
+
+.table-custom  {
+    background: white;
+    border-radius: 4px;
+    border-collapse: collapse;
+   
+}
+
+.table-custom th td {
+    padding-left: 5px;
+}
+
+.table-custom thead th {
+    font-size: 14px;
+    color: black;
+    font-weight: 600;
+    background: #eaeaea;
+    border: 0px !important;
+}
+
+.table-custom tbody td  {
+   
+    height: 1.5em;
+    line-height: 1.5em;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: white;
+}
+
+
+.table-custom th {
+    font-size: 12px;
+} 
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #92c7ff !important;
+    border-color: #92c7ff !important;
+}
+
+.page-link {
+    padding: 0.3rem .70rem !important;
+    line-height: 1.25;
+    background-color: #fff;
+    border: 0px solid #dee2e6;
+}
+
+
+/* 
+Tabs
+----------------- */
+
+.tabbar-container {
+    margin-bottom: 5px;
+    display: flex;
+    border-bottom: 1px solid #d6d6d6;
+    box-shadow: 0px 2px 3px -4px;
+}
+
+#creditNoteAddRefundTab {
+    padding: 4px;
+    border-radius: 5px 5px 0px 0px;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    font-size: 14px;
+    font-weight:600;
+    margin-right: 2px;
+    color: #888;
+    cursor: pointer;
+}
+
+#creditNoteAddInvoiceCredit{
+    padding: 4px;
+    border-radius: 5px 5px 0px 0px;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    font-size: 14px;
+    font-weight:600;
+    color: #888;
+    cursor: pointer;
+}
+
+.tab-open {
+    background: #e2e2e2 !important;
+    color: black !important;
+}
+
+/* Agregar Item
+------------------------ */
+
+.price_list {
+    justify-content: flex-end;
+    color: #777676;
+    display: flex;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.generalPriceList{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 5px;
+    margin-left: 5px;
+    width: 48%;
+    height: 40px;
+    border-top: 1px solid #ccc;
+}
+

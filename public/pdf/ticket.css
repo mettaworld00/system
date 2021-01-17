@@ -1,0 +1,92 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    width: 100%;
+    margin: 0 auto;
+}
+
+
+
+/* Datos de facturación */
+
+.header {
+    text-align: center;
+}
+
+.info-invoice {
+    width: 100%;
+    display: flex;
+    font-weight: 700;
+}
+
+.info-title {
+    width: 15%;
+    display:flex;
+    flex-direction: column;
+}
+
+.info-value {
+    width: 55%;
+    display:flex;
+    flex-direction: column;
+}
+
+.info-external {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+}
+
+table {
+    width: 100%;
+    text-align: justify;
+    border-collapse: collapse;
+  
+}
+
+thead {
+    border-top: 2px solid #494949;
+     border-bottom: 2px solid #494949 ;
+}
+
+thead th {
+    padding: 5px;
+   
+}
+
+td {
+    padding: 10px;
+}
+
+
+
+.container-price {
+    border-top: 2px solid #494949;
+}
+
+.titles,
+.prices
+ {
+    font-weight: 700;
+}
+
+
+.total-title,
+.price-total {
+    font-weight: 700;
+    font-size: 22px;
+}
+
+.footer {
+    text-align: center;
+}
+
