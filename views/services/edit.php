@@ -1,6 +1,5 @@
-<?php $invoice = Help::showInvoice($_GET['id']);
+<?php $invoice = Help::showServiceInvoice($_GET['id']);
 while ($element = $invoice->fetch_object()) : ?>
-
 
     <div class="section-wrapper">
         <div class="align-content clearfix">
@@ -99,13 +98,10 @@ while ($element = $invoice->fetch_object()) : ?>
         <?php if ($element->status_name == 'Por cobrar') : ?>
         <table class="DetalleTemp">
             <thead>
-                <th>Código</th>
                 <th>Descripción</th>
-                <th>Stock</th>
-                <th>Cant.</th>
-                <th>Desc -$</th>
-                <th>Impuestos</th>
+                <th>Cantidad</th>
                 <th>Precio</th>
+                <th>Desc -$</th>
                 <th>Importe</th>
                 <th></th>
             </thead>
@@ -113,27 +109,24 @@ while ($element = $invoice->fetch_object()) : ?>
             <tbody>
             
                     <tr>
-                        <input type="hidden" name="product_id" value="" id="product_id">
-                        <input type="hidden" name="invoice_id" value="<?= $element->invoice_id ?>" id="invoice_id">
+                        <input type="hidden" name="service_id" value="" id="service_id">
+                        <input type="hidden" name="invoice_id" value="<?= $element->service_invoice_id?>" id="invoice_id">
 
-                        <td><input class="no-border" type="text" name="codigo" id="barcode"></td>
-                        <td class="2">
-
-                            <select name="" id="description" class="search">
-                                <option value="" selected></option>
-                                <?php $products = Help::showProducts();
-                                while ($product = $products->fetch_object()) : ?>
-                                    <option value="<?= $product->product_name ?>"><?= $product->product_name ?></option>
-                                <?php endwhile; ?>
-                            </select>
-                        </td>
-                        <td> <input class="invisible-input" type="text" id="stock" disabled> </td>
-                        <td><input class="no-border" type="text" name="" id="quantity" pattern="[0-9]" disabled></td>
-                        <td> <input class="no-border" type="text" id="discount" disabled> </td>
-                        <td><input class="no-border" type="text" id="tax_value" disabled></td>
-                        <td> <input class="invisible-input" type="text" id="price_out" disabled> </td>
-                        <td><input id="total_price" class="invisible-input" type="text" name="" disabled></td>
-                        <td> <a id="addPurchase" href="#"><i class="far fa-plus-square"></i> Agregar</a></td>
+                        <td>
+                        <select class="search col-md-12" name="" id="service_description">
+                            <option value="" selected>Seleccionar</option>
+                            <?php $services = Help::showServices();
+                            while ($service = $services->fetch_object()) : ?>
+                                <option value="<?= $service->service_id ?>"><?= $service->service_name ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                        <a class="ml-1 mt-1" data-toggle="modal" data-target="#modalService"><i class="fas fa-plus-circle"></i></a>
+                    </td>
+                    <td><input class="invisible-input" type="number" id="service_quantity" value="0" disabled></td>
+                    <td><input class="invisible-input" type="text" id="service_price" value="0.00" disabled></td>
+                    <td> <input class="no-border" type="text" id="service_discount" disabled> </td>
+                    <td><input id="totalServicePrice" class="invisible-input" type="text" name="" disabled></td>
+                    <td> <a id="addServiceToInvoice" href="#"><i class="far fa-plus-square"></i> Agregar</a></td>
                     </tr>
              
             </tbody>
@@ -142,34 +135,32 @@ while ($element = $invoice->fetch_object()) : ?>
 
         <table id="Detalle" class="DetalleTemp">
             <thead>
-                <th>Código</th>
                 <th>Descripción</th>
-                <th>Cant</th>
+                <th>Cantidad</th>
                 <th>Precio</th>
                 <th>Desc -$</th>
                 <th>Importe</th>
                 <th></th>
             </thead>
 
-            <?php $details = Help::showDetail($_GET['id']); while ($detail = $details->fetch_object()) : ?>
+            <?php $details = Help::showServiceDetail($_GET['id']); while ($detail = $details->fetch_object()) : ?>
 
-                <tbody id="detail_row">
+                <tbody id="service_detail_row">
                     <tr>
-                        <td><?= $detail->product_code ?></td>
-                        <td><?= $detail->product_name ?></td>
+                        <td><?= $detail->service_name ?></td>
                         <td><?= $detail->total_quantity ?></td>
-                        <td><?= number_format($detail->price_out) ?></td>
+                        <td><?= number_format($detail->price) ?></td>
                         <td><?= number_format($detail->discount) ?></td>
                         <td><?= number_format($detail->total_price) ?></td>
                         <td>
                             <span class="action-delete <?php if ($element->status_name != 'Por cobrar') { ?> action-disable  <?php } ?>" 
-                            <?php if ($element->status_name == 'Por cobrar') { ?> onclick="deleteInvoiceDetail('<?= $detail->invoice_detail_id ?>','<?= $detail->invoice_id ?>','<?= $detail->product_id ?>','<?= $detail->total_quantity ?>','<?= $detail->stock ?>')" <?php } ?>>
+                            <?php if ($element->status_name == 'Por cobrar') { ?> onclick="deleteInvoiceDetail('<?= $detail->service_detail_id ?>','<?= $element->service_invoice_id ?>')" <?php } ?>>
                             <i class="far fa-trash-alt"></i>
                             </span>
                         </td>
                     </tr>
                 </tbody>
-            <?php endwhile; ?>3
+            <?php endwhile; ?>
         </table>
 
 

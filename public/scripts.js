@@ -107,6 +107,8 @@ $(document).ready(function () {
    * Bootstrap4 PopOvers
    -----------------------------------*/
 
+
+
   $(function () {
     $('.example-popover').popover({
       container: 'body'
@@ -118,8 +120,9 @@ $(document).ready(function () {
   })
 
 
+ $('.loader').hide(); // Loader 
 
-
+   
 
 
 }) // Exit ready;

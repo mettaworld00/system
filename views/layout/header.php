@@ -9,16 +9,17 @@
 
   <?php if (isset($_SESSION['admin']) || isset($_SESSION['identity'])) : ?>
 
-  <link rel="stylesheet" href="<?= base_url ?>/public/style.css">
- 
+    <link rel="stylesheet" href="<?= base_url ?>/public/style.css">
+
 
   <?php endif; ?>
 
   <script src="<?= base_url ?>/public/jquery/jquery.js" type="text/javascript"></script>
   <script src="<?= base_url ?>/public/scripts.js" text="text/javascript"></script>
- 
+
   <!-- Scripts -->
 
+  <script src="<?= base_url ?>/public/functions/home.js" text="text/javascript"></script>
   <script src="<?= base_url ?>/public/functions/users.js" text="text/javascript"></script>
   <script src="<?= base_url ?>/public/functions/invoices.js" text="text/javascript"></script>
   <script src="<?= base_url ?>/public/functions/products.js" text="text/javascript"></script>
@@ -46,15 +47,15 @@
 
   <!-- Data Table -->
 
-  <link rel="stylesheet" href="<?=base_url?>/public/datatable/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="<?= base_url ?>/public/datatable/dataTables.bootstrap4.min.css">
 
-  <script src="<?=base_url?>/public/datatable/jquery.dataTables.min.js" text="text/javascript"></script>
-  <script src="<?=base_url?>/public/datatable/dataTables.bootstrap4.min.js"></script>
+  <script src="<?= base_url ?>/public/datatable/jquery.dataTables.min.js" text="text/javascript"></script>
+  <script src="<?= base_url ?>/public/datatable/dataTables.bootstrap4.min.js"></script>
 
   <!-- Select2 -->
 
-  <link rel="stylesheet" href="<?=base_url?>/public/select2/select2.min.css">
-  <script src="<?=base_url?>/public/select2/select2.full.min.js" text="text/javascript"></script>
+  <link rel="stylesheet" href="<?= base_url ?>/public/select2/select2.min.css">
+  <script src="<?= base_url ?>/public/select2/select2.full.min.js" text="text/javascript"></script>
 
   <!-- AlertifyJS -->
 
@@ -62,97 +63,114 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
 
+  <!-- ChartJS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+ 
 </head>
 
 <body>
 
-<?php if (isset($_SESSION['admin']) || isset($_SESSION['identity'])) : ?>
+  <?php if (isset($_SESSION['admin']) || isset($_SESSION['identity'])) : ?>
 
-  <section class="contenido">
+    <div class="loader">
+    <div class="loading">
+      <div class="load">
+       
+      <div class="loadingio-spinner-spin-cx0o90u04yc"><div class="ldio-1q5n8ygi9ox">
+<div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div>
+</div></div>
 
-    <aside class="sidebar clearfix">
-      <nav class="app-menu">
-        <div class="logo">
-            <span><?php echo $_SESSION['identity']->username?> </span>
-        </div>
 
-        <ul id="accordion" class="accordion">
-          <li>
-            <div class="link"><a href="<?= base_url ?>home/index"><i class="mr-3 fas fa-home"></i>Inicio</a></div>
-          </li>
+      </div>
+    </div>
+    </div>
 
-          <li class="dropdown-1">
-            <div class="link"><i class="mr-3 fas fa-arrow-circle-down"></i>Ventas <i class="fas fa-chevron-down"></i></div>
-            <ul class="submenu ">
-              <li><a href="<?= base_url ?>invoices/addpurchase">Factura de venta</a></li>
-              <li><a href="<?= base_url ?>invoices/index">Facturas</a></li>
-              <li><a href="<?= base_url ?>">Pagos recibidos</a></li>
-              
-            </ul>
-          </li>
+    <section class="contenido">
 
-          <li class="dropdown-2">
-            <div class="link"><i class="mr-3 fas fa-user-tie"></i>Servicios <i class="fas fa-chevron-down"></i></div>
-            <ul class="submenu">
-              <li><a href="<?= base_url ?>services/addpurchase">Factura de servicio</a></li>
-              <li><a href="<?= base_url ?>services/index">Servicios</a></li>
-            </ul>
-          </li>
+      <aside class="sidebar clearfix">
+        <nav class="app-menu">
+          <div class="logo">
+            <span><?php echo $_SESSION['identity']->username ?> </span>
+          </div>
 
-          <li class="dropdown-3">
-            <div class="link"><i class="mr-3 fas fa-box"></i>Inventario <i class="fas fa-chevron-down"></i></div>
-            <ul class="submenu ">
-              <li><a href="<?= base_url ?>product/index">Items de venta</a></li>
-              <!-- <li><a href="<?= base_url ?>">Valor del inventario</a></li>
-              <li><a href="<?= base_url ?>inventory_control/index">Ajustes de inventario</a></li>
-              <li><a href="<?= base_url ?>price_list/index">Lista de précios</a></li>
-              <li><a href="">Almacenes</a></li> -->
-              <li><a href="<?= base_url ?>categories/index">Categorías</a></li>
-              <li><a href="<?= base_url ?>taxes/index">Impuestos</a></li>
-              
-            </ul>
-          </li>
+          <ul id="accordion" class="accordion">
+            <li>
+              <div class="link"><a href="<?= base_url ?>home/index"><i class="mr-3 fas fa-home"></i>Inicio</a></div>
+            </li>
 
-          <!-- <li class="dropdown-4">
+            <li class="dropdown-1">
+              <div class="link"><i class="mr-3 fas fa-arrow-circle-down"></i>Ventas <i class="fas fa-chevron-down"></i></div>
+              <ul class="submenu ">
+                <li><a href="<?= base_url ?>invoices/addpurchase">Factura de venta</a></li>
+                <li><a href="<?= base_url ?>invoices/index">Facturas</a></li>
+                <li><a href="<?= base_url ?>">Pagos recibidos</a></li>
+
+              </ul>
+            </li>
+
+            <li class="dropdown-2">
+              <div class="link"><i class="mr-3 fas fa-user-tie"></i>Servicios <i class="fas fa-chevron-down"></i></div>
+              <ul class="submenu">
+                <li><a href="<?= base_url ?>services/addpurchase">Factura de servicio</a></li>
+                <li><a href="<?= base_url ?>services/invoices">Facturas</a></li>
+                <li><a href="<?= base_url ?>services/index">Servicios</a></li>
+              </ul>
+            </li>
+
+            <li class="dropdown-3">
+              <div class="link"><i class="mr-3 fas fa-box"></i>Inventario <i class="fas fa-chevron-down"></i></div>
+              <ul class="submenu ">
+                <li><a href="<?= base_url ?>product/index">Items de venta</a></li>
+                <li><a href="<?= base_url ?>inventory_control/index">Ajustes de inventario</a></li>
+                <li><a href="<?= base_url ?>inventory_control/inventory">Valor de inventario</a></li>
+                <li><a href="<?= base_url ?>price_list/index">Lista de précios</a></li>
+                <!-- <li><a href="">Almacenes</a></li> -->
+                <li><a href="<?= base_url ?>categories/index">Categorías</a></li>
+                <li><a href="<?= base_url ?>taxes/index">Impuestos</a></li>
+
+              </ul>
+            </li>
+
+            <!-- <li class="dropdown-4">
             <div class="link"><i class="mr-3 fas fa-address-book"></i>Contactos <i class="fas fa-chevron-down"></i></div>
             <ul class="submenu">
               <li><a href="<?= base_url ?>contacts/index">Contactos</a></li>
             </ul>
           </li> -->
 
-          <li class="dropdown-5">
-            <div class="link"><i class="mr-3 fas fa-project-diagram"></i>Reportes <i class="fas fa-chevron-down"></i></div>
-            <ul class="submenu">
-              <li><a href="<?= base_url ?>">Ventas</a></li>
-            </ul>
-          </li>
+            <li class="dropdown-5">
+              <div class="link"><i class="mr-3 fas fa-project-diagram"></i>Reportes <i class="fas fa-chevron-down"></i></div>
+              <ul class="submenu">
+                <li><a href="<?= base_url ?>">Ventas</a></li>
+              </ul>
+            </li>
 
-          <!-- <li class="dropdown-6">
+            <!-- <li class="dropdown-6">
             <div class="link"><i class="mr-3 fas fa-users"></i>Usuarios <i class="fas fa-chevron-down"></i></div>
             <ul class="submenu">
               <li><a href="<?= base_url ?>contacts/add">Nuevo usuario</a></li>
               <li><a href="<?= base_url ?>users/index">Usuarios</a></li>
             </ul>
           </li> -->
-<!-- 
+            <!-- 
           <li>
             <div class="link"><a href="<?= base_url ?>">Configuración</a></div>
           </li> -->
 
 
-          <li>
-            <a id="logout" href="#"><i class="mr-3 fas fa-home"></i>Cerrar sesión</a>
-          </li>
+            <li>
+              <a id="logout" href="#"><i class="mr-3 fas fa-home"></i>Cerrar sesión</a>
+            </li>
 
-        </ul>2
+          </ul>2
 
-    
-      </nav>
-    </aside>
 
-    <header class="admin-bar">
+        </nav>
+      </aside>
 
-      <!-- <div class="cantainer">
+      <header class="admin-bar">
+
+        <!-- <div class="cantainer">
         <div class="option">
           <i class="menu-option fas fa-th-large"></i>
           <ul class="nav-option">
@@ -165,15 +183,17 @@
           <input class="form-search" type="search" name="" value="Buscar" id="">
         </div> -->
 
-      </div>
+        </div>
 
-      <!-- <div class="admin">
+        <!-- <div class="admin">
         <strong> Admin | </strong>
         <a>Cerrar sesion</a>
       </div> -->
-    </header>
+      </header>
 
-    <div class="main wrap">
-      <main>
+      <div class="main wrap">
+        <main>
 
-      <?php endif; ?>
+
+
+        <?php endif; ?>

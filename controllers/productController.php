@@ -7,6 +7,8 @@ class ProductController
 
     public function index()
     {
+        $symbol = "DOP";
+        
         $model = new Product();
 
         $products = $model->showProducts();

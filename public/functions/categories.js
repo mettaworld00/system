@@ -25,32 +25,49 @@ $(document).ready(function () {
     }
 
 
-    /**
-     * Agregar categoria
-     ------------------------------------------*/
 
-    $('#addCategory').on('click', (e) => {
-        e.preventDefault();
- 
-        $.ajax({
-            type: "post",
-            url: SITE_URL + "functions/categories.php",
-            data: {
-                userID: $('#user_id').val(),
-                name: $('#category_name').val(),
-                comment: $('#category_comment').val(),
-                action: 'agregarCategoria'
-            },
-            success: function (res) {
-                     console.log(res)
-            }
-        });
-    })
 
 }); // Ready
 
 
 
+/**
+ * Agregar categoría
+ */
+
+ function AddCategorie(user_id){
+
+    $.ajax({
+        type: "post",
+        url: SITE_URL + "functions/categories.php",
+        data: {
+            userID: user_id,
+            name: $('#category_name').val(),
+            comment: $('#category_comment').val(),
+            action: 'agregarCategoria'
+        },
+        beforeSend: function () {
+           $('.loader').show();
+        },
+        success: function (res) {
+             
+            try {
+
+                if (res != 1){
+                 throw new Error('No se ha podido insertar esta categoría');
+                }
+                
+            } catch (error) {
+
+                console.log(error)
+                $('.loader').hide();
+            }
+
+                $('.loader').hide();
+        }
+    });
+
+ }
 /**
  * Borrar categoria
  ----------------------------------*/

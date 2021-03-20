@@ -8,7 +8,11 @@
 </div>
 
 
-<div class="generalContainer">
+
+
+<div class="generalContainer ">
+
+
     <div class="container">
 
         <div class="form-group row nofactura">
@@ -227,7 +231,7 @@
         </div>
     </div>
 
-
+    
 </div> <!-- generalConntainer -->
 
 

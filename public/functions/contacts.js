@@ -74,23 +74,27 @@ $(document).ready(function () {
 
 
 /**
- * Crear servicio
+ * Crear contacto
  ---------------------------------------------*/
 
  function AddContact() {
-
 
     $.ajax({
         type: "post",
         url: SITE_URL + "functions/contacts.php",
         data: {
-            name: $('#name_service_md').val(),
-            price: $('#price_service_md').val(),
-            action: 'agregarServicio'
+            userID: $('#user_id').val(),
+            name: $('#customer_name_md').val(),
+            rnc: $('#rnc_md').val(),
+            tel1: $('#telephone1_md').val(),
+            tel2: $('#telephone2_md').val(),
+            email: $('#email_md').val(),
+            action: 'crearContacto'
 
         },
         success: function (res) {
             window.location.reload();
+          
         }
     });
 

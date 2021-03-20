@@ -25,7 +25,7 @@ if ($_POST['action'] == 'buscarCliente') {
 
 if ($_POST['action'] == 'crearContacto') {
 
-  $user_id = 1;
+  $user_id = $_POST['userID'];
   $name = $_POST['name'];
   $rnc = $_POST['rnc'];
   $email = $_POST['email'];

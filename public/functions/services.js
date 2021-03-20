@@ -11,16 +11,14 @@ $(document).ready(function () {
     $('#total_service_discount').val('0.00');
     $('#total_service_subtotal').val('0.00');
 
-
-    function reload() {
-        $('#noService').load(location.href + " #noService");
-    }
-
     /**
      * Generar No. factura
      ------------------------*/
+    reload();
 
-    function clcNoInvoice () {
+    function reload() {
+
+      
 
         $.ajax({
             type: "post",
@@ -31,11 +29,12 @@ $(document).ready(function () {
             success: function (res) {
                 var pref = '00';
                 $('#noService').val(pref + res);
+
+                $('#noService').load(location.href + " #noService");
+                localStorage.setItem('Noservice', pref + res);
             }
         });
     }
-
-    clcNoInvoice();
 
     /**
      * Buscar datos del servicio
@@ -57,6 +56,13 @@ $(document).ready(function () {
                 if (res != 'null') {
                     var data = JSON.parse(res);
 
+
+                    /**
+                     *  Encontrar ID de servicios que coincidan en el detalle
+                     * --> Función sólo usada en ventas creadas.
+                     * */
+                    findAmatch(data.service_id);
+
                     // Habilitar campos
 
                     $('#addService').show();
@@ -65,6 +71,7 @@ $(document).ready(function () {
 
                     // Mostrar datos
 
+                    $('#service_id').val(data.service_id);
                     $('#service_price').val(format.format(data.price));
                     $('#service_quantity').val(1);
                     $('#totalServicePrice').val(format.format(data.price));
@@ -73,6 +80,42 @@ $(document).ready(function () {
             }
         });
     });
+
+
+    /**
+     * 
+     * Verificar si existe un mismo ID de servicio 
+     * que coincidan en el detalle de la factura creada
+    -------------------------------------------- */
+
+    function findAmatch(id) {
+
+        $.ajax({
+            type: "post",
+            url: SITE_URL + "functions/services.php",
+            data: {
+                action: "buscarCoincidencia",
+                service_id: id,
+                invoice_id: $('#invoice_id').val()
+            },
+            success: function (res) {
+                if (res != '') {
+
+                    if (res == $('#service_id').val()) {
+
+                        $('#service_quantity').attr("disabled", true);
+                        $('#service_discount').attr("disabled", true);
+                        $('#addServiceToInvoice').hide();
+
+                    } else {
+
+                        $('#addServiceToInvoice').show();
+
+                    }
+                }
+            }
+        });
+    }
 
 
     // Calcular cantidad
@@ -105,7 +148,7 @@ $(document).ready(function () {
         } else {
 
             $('#addService').show();
-            var price = $('#service_price').val().replace(',', '');
+            var price = $('#service_price').val().replace(/,/g, '');
             var totalService = parseInt(quantity) * parseInt(price) - $('#service_discount').val();
 
             $('#totalServicePrice').val(format.format(totalService));
@@ -117,6 +160,11 @@ $(document).ready(function () {
 
 
     function clcTotal() {
+
+        const style = new Intl.NumberFormat('en-CA', {
+            style: 'currency',
+            currency: 'DOP'
+        });
 
 
         if (localStorage.getItem('services')) {
@@ -138,9 +186,9 @@ $(document).ready(function () {
                     discount += element.discount;
                     var total = subtotal - discount;
 
-                    $('#total_service_subtotal').val(format.format(subtotal));
-                    $('#total_service_discount').val(format.format(discount));
-                    $('#total_service').val(format.format(total));
+                    $('#total_service_subtotal').val(style.format(subtotal));
+                    $('#total_service_discount').val(style.format(discount));
+                    $('#total_service').val(style.format(total));
                     $('#purchase').val(total);
                 });
             }
@@ -164,10 +212,12 @@ $(document).ready(function () {
             quantity: $('#service_quantity').val(),
             price: $('#service_price').val(),
             discount: $('#service_discount').val(),
-            final_price: $('#totalServicePrice').val().replace(',', '')
+            final_price: $('#totalServicePrice').val().replace(/,/g, "")
 
         }
 
+
+        // Buscar coincidencia si existe en el localStorage
         FindAMatch(ArrayServices)
 
         function FindAMatch(arr) {
@@ -205,7 +255,6 @@ $(document).ready(function () {
 
     function showDB() {
 
-
         // Agregar boton Cancel y Guardar
         if ($('#rows_services').length >= 1) {
 
@@ -242,55 +291,53 @@ $(document).ready(function () {
 
     // Auto cargar servicios del LocalStorage
 
-    $(function () {
+    if ($(location).attr("pathname") == "/sistem/services/addpurchase") {
 
-        // Verificar
-        if (localStorage.getItem("services")) {
+        $(function () {
 
-            arrayLocalStorage = JSON.parse(localStorage.getItem("services"));
+            // Verificar
+            if (localStorage.getItem("services")) {
+                reload();
+                arrayLocalStorage = JSON.parse(localStorage.getItem("services"));
 
-            // Loop de los servicios en localStorage 
-            arrayLocalStorage.forEach((element, index) => {
+                // Loop de los servicios en localStorage 
+                arrayLocalStorage.forEach((element, index) => {
 
+                    let data = {
 
-                let data = {
+                        name: element.name,
+                        service_id: element.service_id,
+                        quantity: element.quantity,
+                        price: element.price,
+                        discount: element.discount,
+                        final_price: element.final_price
 
-                    name: element.name,
-                    service_id: element.service_id,
-                    quantity: element.quantity,
-                    price: element.price,
-                    discount: element.discount,
-                    final_price: element.final_price
+                    }
 
-                }
+                    ArrayServices.push(data); // Guardar de localStorage a ArrayServices
+                    clcTotal();
 
-                ArrayServices.push(data); // Guardar de localStorage a ArrayServices
-                clcTotal();
+                    // Mostrar botones Cancel y Guardar
 
-                // Mostrar botones Cancel y Guardar
+                    if ($('#rows_services').length >= 1) {
 
-                if ($('#rows_services').length >= 1) {
+                        $('#processService').show();
+                        $('#cancelService').show();
 
-                    $('#processService').show();
-                    $('#cancelService').show();
+                    } else {
 
-                } else {
+                        $('#processService').hide();
+                        $('#cancelService').hide();
+                    }
 
-                    $('#processService').hide();
-                    $('#cancelService').hide();
-                }
+                    // Filas
+                    var disc = format.format(element.discount);
+                    document.querySelector('#rows_services').innerHTML += `<tr><td>${element.name}</td><td>${element.quantity}</td><td>${element.price}</td><td>${disc}</td><td>${format.format(element.final_price)}</td><td><i id="delete" class=" fas fa-backspace"></i></td></tr>`;
 
-                // Filas
-                var disc = format.format(element.discount);
-                document.querySelector('#rows_services').innerHTML += `<tr><td>${element.name}</td><td>${element.quantity}</td><td>${element.price}</td><td>${disc}</td><td>${format.format(element.final_price)}</td><td><i id="delete" class=" fas fa-backspace"></i></td></tr>`;
-
-            });
-
-        }
-
-
-    })
-
+                });
+            }
+        })
+    }
 
     /**
      * Eliminar servicio
@@ -359,6 +406,8 @@ $(document).ready(function () {
     $('#processService').on('click', (e) => {
         e.preventDefault();
 
+        reload();
+
         if ($('#rows_services tr').length > 0) {
 
             if ($('#customer_id').val() < 1) {
@@ -386,32 +435,42 @@ $(document).ready(function () {
             customer_id = contact_id;
         } else {
             customer_id = $('#customer_id').val();
-
         }
 
-        $.ajax({
-            type: "post",
-            url: SITE_URL + "functions/services.php",
-            data: {
-                action: "procesarVenta",
-                customer_id: customer_id,
-                user_id: $('#user_id').val(),
-                payment_method: $('#payment_method').val(),
-                purchase: $('#purchase').val(),
-                noinvoice: $('#noService').val(),
-                created_at: $('#date').val(),
-                expiration: $('#invoice_expiration').val()
-            },
-            success: function (res) {
-                console.log(res);
+        let Noservice;
 
-                 createServiceDetail(res)  // Crear detalle
+        if (localStorage.getItem('Noservice') != null) {
 
-            }
-        });
+            Noservice = localStorage.getItem('Noservice');
+
+            $.ajax({
+                type: "post",
+                url: SITE_URL + "functions/services.php",
+                data: {
+                    action: "procesarVenta",
+                    customer_id: customer_id,
+                    user_id: $('#user_id').val(),
+                    payment_method: $('#payment_method').val(),
+                    purchase: $('#purchase').val(),
+                    noinvoice: Noservice,
+                    created_at: $('#date').val(),
+                    expiration: $('#invoice_expiration').val()
+                },
+                beforeSend: function () {
+                    $('.loader').show();
+                },
+                success: function (res) {
+
+                    createServiceDetail(res) // Crear detalle
+                  
+                }
+            });
+
+        } else {
+            console.log("No se ha encontrado la factura");
+        }
 
     };
-
 
     // Crear detalle de servicio
 
@@ -437,18 +496,26 @@ $(document).ready(function () {
                         created_at: $('#date').val()
                     },
                     success: function (res) {
-                          
+
                         if (res == 'listo') {
 
-                            localStorage.clear();
-                            window.location.reload();
+                            localStorage.clear(); // Borrar localStorage
+                            ArrayServices = []; // Vaciar Arreglo
 
-                            clcNoInvoice(); // Generar número de la nueva factura
+                            // Default
+                            $('#Detalle_service').load(location.href + " #Detalle_service");
+                            $('#total_service').val('0.00')
+                            $('#total_service_discount').val('0.00');
+                            $('#total_service_subtotal').val('0.00');
 
+                            reload();; // Generar número de la nueva factura
+                            
+                            $('.loader').hide()
                         } else {
                             console.log(res)
+                            $('.loader').hide()
                         }
-                      
+
                     }
                 });
 
@@ -458,6 +525,52 @@ $(document).ready(function () {
     }
 
 
+    // Agregar servicios a la factura
+
+    $('#addServiceToInvoice').on('click', (e) => {
+        e.preventDefault();
+
+        var service_id = $('#service_id').val();
+        var total_price = $('#totalServicePrice').val().replace(/,/g, "");
+        var invoice_id = $('#invoice_id').val();
+        var quantity = $('#service_quantity').val();
+        var discount = $('#service_discount').val().replace(/,/g, "");
+
+        $.ajax({
+            type: "post",
+            url: SITE_URL + "functions/services.php",
+            data: {
+                action: "agregarCompra",
+                userID: $('#user_id').val(),
+                invoice_id: invoice_id,
+                service_id: service_id,
+                total_price: total_price,
+                quantity: quantity,
+                discount: discount
+            },
+            success: function (res) {
+
+                updatePriceInvoice(invoice_id);
+
+                $('#Detalle').load(location.href + " #Detalle");
+
+                // detailTotal();
+
+                // Default 
+                $('#service_price').val('0.00');
+                $('#totalServicePrice').val('0.00');
+                $('#service_quantity').val('0');
+                $('#description').val('-');
+                $('#service_quantity').attr("disabled", true);
+                $('#service_discount').attr("disabled", true);
+                $('#totalServicePrice').attr("disabled", true);
+                $('#select2-service_description-container').empty();
+
+
+            }
+        });
+    })
+
 
 
 
@@ -466,13 +579,11 @@ $(document).ready(function () {
 }) // Ready ----------------------------//
 
 
-
 /**
  * Crear servicio
  ---------------------------------------------*/
 
 function AddService() {
-
 
     $.ajax({
         type: "post",
@@ -485,7 +596,104 @@ function AddService() {
         },
         success: function (res) {
             window.location.reload();
+           
         }
     });
+
+}
+
+
+// Eliminar del detalle de factura
+
+function deleteInvoiceDetail(service_detail_id, invoice_id) {
+
+    alertify.confirm("Eliminar compra", "¿Desea eliminar esta compra? ",
+        function () {
+
+            $.ajax({
+                url: SITE_URL + "functions/services.php",
+                method: "post",
+                data: {
+                    action: "eliminarDetalle",
+                    service_detail_id: service_detail_id
+
+                },
+                beforeSend: function () {
+                    $('.loader').show();
+                },
+                success: function (res) {
+
+                    if (res == 1) {
+
+                        updatePriceInvoice(invoice_id); // Actualizar precio de factura
+
+                        $('#Detalle').load(location.href + " #Detalle");
+                        // detailTotal() // Calcular detalle de factura
+
+                        $('.loader').hide();
+
+
+                    } else {
+                        alertify.error('No se ha podido eliminar este compra');
+                    }
+
+                }
+            });
+
+        },
+        function () {
+
+        });
+}
+
+
+// Actualizar precio de factura
+
+function updatePriceInvoice(invoice_id) {
+
+    var action = "actualizarFactura";
+
+    $.ajax({
+        type: "post",
+        url: SITE_URL + "functions/services.php",
+        data: {
+            action: action,
+            invoice_id: invoice_id
+        },
+        success: function (res) {
+            console.log(res);
+        }
+    });
+}
+
+
+// Desactivar factura
+
+function disabledServiceInvoice(invoice_id) {
+
+    alertify.confirm("<i class='text-warning fas fa-exclamation-circle'></i> Desactivar factura", "¿Desea desactivar esta factura? ",
+        function () {
+
+            $.ajax({
+                type: "post",
+                url: SITE_URL + "functions/services.php",
+                data: {
+                    invoiceID: invoice_id,
+                    action: 'desactivarFactura'
+                },
+                beforeSend: function () {
+                    $('.loader').show();
+                },
+                success: function (res) {
+
+                    $('.loader').hide();
+                    $('#example').load(location.href + " #example");
+                }
+            });
+
+        },
+        function () {
+
+        });
 
 }

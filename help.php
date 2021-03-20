@@ -112,7 +112,12 @@ class Help
    public static function showProducts()
    {
 
-      $query = "SELECT *FROM products";
+      $warehouseID = $_SESSION['identity']->warehouse_id;
+
+      $query = "SELECT *FROM products p 
+      INNER JOIN warehouses w on p.warehouse_id = w.warehouse_id 
+      INNER JOIN status s ON p.status_id = s.status_id
+      WHERE s.status_name = 'Activo' AND w.warehouse_id = $warehouseID ";
 
       $db = Database::connect();
       return $db->query($query);
@@ -196,6 +201,8 @@ class Help
       return $db->query($query);
    }
 
+   // Función para mostrar el detalle de una factura
+
    public static function showDetail($id)
    { 
 
@@ -223,6 +230,43 @@ class Help
       $query = "SELECT *FROM services";
 
       $db = Database::connect();
+      return $db->query($query);
+   }
+
+   // Función para mostrar los datos de una factura
+
+   public static function showServiceInvoice($id)
+   {
+
+      $db = Database::connect();
+
+      $query = "SELECT 
+      si.service_invoice_id, si.noinvoice, si.total_invoice, si.money_received, si.pending, si.expiration, si.created_at as 'date',
+      c.customer_name, c.rnc, c.telephone1, s.status_name, p.payment_name, u.user_id, u.username, u.name
+      FROM service_invoices si 
+      INNER JOIN customers c ON si.customer_id = c.customer_id
+      INNER JOIN status s ON si.status_id = s.status_id 
+      INNER JOIN payment_methods p ON si.payment_id = p.payment_id
+      INNER JOIN users u ON si.user_id = u.user_id 
+      WHERE si.service_invoice_id = '$id'";
+
+      return $db->query($query);
+   }
+
+   // Función para mostrar el detalle de una factura
+
+   public static function showServiceDetail($id)
+   { 
+
+      $db = Database::connect();
+
+      $query = "SELECT 
+      sd.service_invoice_id, sd.service_detail_id, sd.total_quantity, sd.total_price, sd.discount, 
+      s.service_id, s.service_name, s.price 
+      FROM service_detail sd 
+      INNER JOIN services s ON sd.service_id = s.service_id 
+      WHERE sd.service_invoice_id = '$id'";
+
       return $db->query($query);
    }
 

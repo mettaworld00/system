@@ -1,6 +1,7 @@
 <?php
 
 require_once '../config/db.php';
+session_start();
 
 /**
  * Generar No. factura
@@ -28,7 +29,6 @@ if ($_POST['action'] == "generarNoFactura") {
 /**
  * Buscar producto por nombre
  ---------------------------------------------*/
-
 
 if ($_POST['action'] == "buscarItemPorNombre") {
 
@@ -59,20 +59,21 @@ if ($_POST['action'] == "buscarItemPorNombre") {
  * Buscar producto por código
  ----------------------------------------*/
 
-
 if ($_POST['action'] == "buscarItem") {
 
   $q = $_POST['product_code'];
   $db = Database::connect();
 
-  $query1 = "SELECT *FROM products WHERE product_code = '$q'";
+  $warehouseID = $_SESSION['identity']->warehouse_id;
+  $query1 = "SELECT *FROM products WHERE product_code LIKE '%$q%' AND warehouse_id = $warehouseID";
 
   $query2 = "SELECT d.discount_value, t.tax_value, t.tax_name FROM products p 
+             INNER JOIN warehouses w on p.warehouse_id = w.warehouse_id
              LEFT JOIN products_discounts pd ON p.product_id = pd.product_id
              LEFT JOIN discounts d ON pd.discount_id = d.discount_id 
              LEFT JOIN products_taxes pt ON p.product_id = pt.product_id
              LEFT JOIN taxes t ON pt.tax_id = t.tax_id
-             WHERE p.product_code = '$q'";
+             WHERE p.product_code LIKE '%$q%' AND w.warehouse_id = $warehouseID";
 
   $datos1 = $db->query($query1);
   $datos2 = $db->query($query2);
@@ -248,7 +249,7 @@ if ($_POST['action'] == 'procesarVenta') {
 
   $db = Database::connect();
 
-  $status = 3; // 3 = Pagado
+  $status = 4; // 3 = Pagada
   $customer_id = $_POST['customer_id'];
   $user_id = $_POST['user_id'];
   $payment_method = $_POST['payment_method'];
@@ -402,23 +403,6 @@ if ($_POST['action'] == "agregarCompra") {
   }
 }
 
-/**
- *  Mostrar datos de la factura a credito mediente el número de factura
- */
-
-// if ($_POST['action'] == "mostrarDatosDeCredito") {
-
-//   $invoice_id = $_POST['invoice_id'];
-
-//   $db = Database::connect();
-
-//   $query = "SELECT *FROM invoices i INNER JOIN customers c ON i.customer_id = c.customer_id WHERE invoice_id = '$invoice_id'";
-//   $datos = $db->query($query);
-
-//   $result = $datos->fetch_assoc();
-//   echo json_encode($result, JSON_UNESCAPED_UNICODE);
-//   exit;
-// }
 
 /**
  * Actualizar precio de factura
@@ -432,15 +416,30 @@ if ($_POST['action'] == "actualizarFactura") {
   $query1 = "SELECT sum(total_price) as 'total_invoice' FROM invoice_detail WHERE invoice_id = '$invoice_id'";
   $datos1 = $db->query($query1);
 
-  $result = $datos1->fetch_object();
-  $total_invoice = $result->total_invoice; // Total de la factura
+  $element = $datos1->fetch_object();
+  $total_invoice = $element->total_invoice; // Total de la factura
+  
 
-  $query2 = "UPDATE invoices SET total_invoice = $total_invoice WHERE invoice_id = '$invoice_id'";
-  $datos2 = $db->query($query2);
+ $query2 = "SELECT  *FROM invoices WHERE invoice_id = '$invoice_id'";
+ $datos2 = $db->query($query2);
+ $element2 = $datos2->fetch_object();
 
-  deleteInvoiceNull($invoice_id);
+ $money_received = $element2->money_received; // Total recibido
+ $pending = $total_invoice - $money_received; // Total pendiente
 
-  echo 1;
+
+  $query3 = "UPDATE invoices SET total_invoice = $total_invoice, pending = $pending 
+  WHERE invoice_id = '$invoice_id'";
+  if ($db->query($query3) === TRUE) {
+    
+    deleteInvoiceNull($invoice_id);
+
+  } else {
+
+    echo "Error: " . $db->error;
+  }
+
+ 
 }
 
 /**
@@ -464,5 +463,58 @@ function deleteInvoiceNull($invoice_id)
     $datos = $db->query($query);
   }
 
-  return true;
+
 }
+
+
+
+/**
+ * Desactivar Factura
+ ----------------------------------------------*/
+
+if ($_POST['action'] == "desactivarFactura") {
+  $db = Database::connect();
+
+  $invoice_id = $_POST['invoiceID'];
+
+  $query = "SELECT * FROM status WHERE status_name = 'Anulada'";
+  $datos = $db->query($query);
+
+  $element = $datos->fetch_object();
+  $statusID = $element->status_id;
+
+  $query2 = "UPDATE invoices SET status_id = $statusID WHERE invoice_id = '$invoice_id'";
+  if ($db->query($query2) === TRUE) {
+
+    // Restaurar items de la factura sin borrarlos
+
+    $query3 = "SELECT * FROM invoice_detail i 
+    INNER JOIN products p ON i.product_id = p.product_id
+    WHERE invoice_id = '$invoice_id'";
+
+    $datos2 = $db->query($query3);
+    while ($element2 = $datos2->fetch_object()) {
+
+      $total_quantity = $element2->total_quantity; // Cantidad agregada
+      $quantity = $element2->quantity; // Cantidad real del producto
+      $product_id = $element2->product_id; // Id producto
+
+      $sum =  $quantity + $total_quantity; // Suma
+
+      $query4 = "UPDATE products SET quantity = $sum WHERE product_id = $product_id;";
+      $query4 .= "UPDATE invoices SET money_received = '0', pending = '0' WHERE invoice_id = '$invoice_id'";
+      if ($db->multi_query($query4) === TRUE) {
+
+        echo "Actualizado";
+
+      } else {
+
+        echo "Error: " . $db->error;
+      }
+    }
+  } else {
+
+    echo "Error: " . $db->error;
+  }
+}
+

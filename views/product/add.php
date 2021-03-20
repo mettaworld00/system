@@ -4,16 +4,10 @@
     </div>
 </div>
 
-<form action="" method="post">
 
-    <div class="generalContainer">
+<div class="generalContainer">
+    <form action="" onsubmit="event.preventDefault(); addNewProduct('<?= $_SESSION['identity']->user_id ?>');">
         <div class="row col-md-12">
-
-
-
-            <!-- Hiddens -->
-            <input type="hidden" name="user_id" value="<?= $_SESSION['identity']->user_id?>" id="user_id">
-            <input type="hidden" name="is_active" value="enabled">
 
             <div class="form-group col-md-3 border-right">
                 <div class="form-group mb-3">
@@ -56,14 +50,13 @@
                     </div>
                 </div>
 
-
             </div>
 
 
             <div class="form-group col-md-2 border-right">
                 <div class="form-group mb-3">
-                    <label class="form-check-label" for="">Código de producto <a href="#" class="example-popover" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?"><i class="far fa-question-circle"></i></a></label>
-                    <input class="form-custom col-sm-12" type="text" name="product_code" placeholder="" id="product_code">
+                    <label class="form-check-label" for="">Código de producto<span class="text-danger">*</span> <a href="#" class="example-popover" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?"><i class="far fa-question-circle"></i></a></label>
+                    <input class="form-custom col-sm-12" type="text" name="product_code" placeholder="" id="product_code" required>
                 </div>
 
                 <div class="form-group mb-3">
@@ -80,7 +73,7 @@
                 <div class="form-group mb-3">
                     <label class="form-check-label" for="">Impuesto %</label>
                     <select class="form-custom search col-sm-12" name="tax" id="tax">
-                    
+
                         <?php $taxes = Help::showTaxes();
                         while ($tax = $taxes->fetch_object()) : ?>
                             <option value="<?= $tax->tax_id ?>"><?= $tax->tax_name ?></option>
@@ -114,7 +107,7 @@
                 <div class="form-group col-sm-2">
                     <label class="form-check-label" for="">Unidad de medida</label>
                     <select class="form-custom col-sm-12 search" name="unit" id="unit">
-                    <?php $units = Help::showUnits();
+                        <?php $units = Help::showUnits();
                         while ($element = $units->fetch_object()) : ?>
                             <option value="<?= $element->unit_id ?>"><?= $element->unit_name ?> </option>
                         <?php endwhile; ?>
@@ -122,8 +115,8 @@
                 </div>
 
                 <div class="form-group col-sm-2">
-                    <label class="form-check-label" for="">Precio compra</label>
-                    <input type="number" name="price_in" class="form-custom col-sm-12 " id="inputPrice_in" placeholder="0.00">
+                    <label class="form-check-label" for="">Precio compra<span class="text-danger">*</span></label>
+                    <input type="number" name="price_in" class="form-custom col-sm-12 " id="inputPrice_in" placeholder="0.00" required>
                 </div>
 
                 <div class="form-group col-sm-2">
@@ -138,7 +131,7 @@
 
                 <div class="form-group col-sm-2">
                     <label class="form-check-label" for="">Expiración <a href="#" class="example-popover" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?"><i class="far fa-question-circle"></i></a></label>
-                    <input class="form-custom col-sm-12" type="date" name="expiration" id="inputExpiration" >
+                    <input class="form-custom col-sm-12" type="date" name="expiration" id="inputExpiration">
                 </div>
 
                 <div class="form-group col-sm-2">
@@ -153,14 +146,16 @@
             </div>
         </div>
 
+        <br> <br>
 
-    </div> <!-- GeneralContainer -->
-
-    <div class="buttons clearfix">
-        <div class="floatButtons">
-            <a class="btn btn-danger" href="<?= base_url ?>product/index">Cancelar</a>
-            <!-- <input class="btn btn-secondary " type="button" value="Guardar y crear nueva" id="createNewProduct"> -->
-            <input class="btn btn-primary " type="button" value="Guardar" id="createProduct">
+        <div class="buttons clearfix">
+            <div class="floatButtons">
+                <a class="btn btn-danger" href="<?= base_url ?>product/index">Cancelar</a>
+                <!-- <input class="btn btn-secondary " type="button" value="Guardar y crear nueva" id="createNewProduct"> -->
+                <input class="btn btn-primary " type="submit" value="Guardar" id="createProduct">
+            </div>
         </div>
-    </div>
-</form>
+
+
+    </form>
+</div> <!-- GeneralContainer -->

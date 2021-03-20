@@ -20,14 +20,11 @@
             <tr>
                 <th>Código</th>
                 <th>Nombre</th>
-                <th>Exist.</th>
-                <th>P/Comp</th>
-                <th>P/Unit</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
                 <th>Acciones</th>
             </tr>
         </thead>
-
-
 
         <tbody>
             <?php  while ($product = $products->fetch_object()) : ?>
@@ -36,25 +33,33 @@
                     <td><?= $product->product_name ?> </td>
 
                     <?php if($product->quantity > $product->inventary_min){?>
-                        <td class="text-success">Hay existencía (<?= $product->quantity ?>)</td>
+                        <td class="text-success"><?= $product->quantity ?></td>
                   
                     <?php } else if($product->quantity < 1) { ?>
-                    <td class="text-danger">Agotado (<?= $product->quantity ?>)</td>
+                    <td class="text-danger"><?= $product->quantity ?></td>
                     <?php } else if($product->quantity <= $product->inventary_min) { ?>
-                        <td class="text-warning">Casi agotado (<?= $product->quantity ?>)</td>
+                        <td class="text-warning"><?= $product->quantity ?></td>
                     <?php }; ?>
 
-                    <td><?=  number_format($product->price_in) ?></td>
-                    <td><?=  number_format($product->price_out) ?></td>
+                    <td><?= $symbol." ".number_format($product->price_out) ?></td>
                     <td>
 
                         <a href="<?=base_url?>product/view&id=<?=$product->product_id?>">
                         <span class="action-view"><i class="fas fa-eye"></i></span>
                         </a>
 
-                        <a href="<?=base_url?>product/edit&id=<?=$product->product_id?>">
-                        <span class="action-edit"><i class="fas fa-pencil-alt"></i></span>
+                        <a  class="action-edit <?php if ($product->status_name != 'Activo') { ?> action-disable <?php } ?> " 
+                                 href="<?php if ($product->status_name == 'Activo') { 
+                                     echo base_url.'product/edit&id='.$product->product_id; 
+                                     } else { echo '#'; } ?> "> 
+                              <i class="fas fa-pencil-alt"></i>
                         </a>
+
+                        <span class="<?php if ($product->status_name == 'Activo'){ ?> action-active  <?php } else { ?> action-delete <?php } ?>" 
+                        <?php if ($product->status_name == 'Activo') { ?>  onclick="disableProduct('<?= $product->product_id ?>')" <?php } else { ?> onclick="enableProduct('<?= $product->product_id ?>')" <?php } ?>
+                        <?php if ($product->status_name == 'Activo'){ ?> title="Desactivar ítem"  <?php } else { ?> title="Activar ítem" <?php } ?> id="">
+                              <i class="fas fa-lightbulb"></i>
+                        </span>
                         
                         <span onclick="deleteProduct('<?= $product->product_id ?>')" class="action-delete"><i class="fas fa-trash-alt"></i></span>
                       

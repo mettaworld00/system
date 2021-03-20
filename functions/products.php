@@ -26,6 +26,14 @@ if ($_POST['action'] == "eliminarProducto") {
 
 if ($_POST['action'] == "agregarProducto") {
 
+  $db = Database::connect();
+
+  $getStatus = "SELECT * FROM status WHERE status_name = 'Activo'";
+  $datos = $db->query($getStatus);
+
+  $element = $datos->fetch_object();
+
+  $statusID = $element->status_id;
   $userID = $_POST['userID'];
   $product_code = $_POST['product_code'];
   $name = $_POST['name'];
@@ -38,12 +46,8 @@ if ($_POST['action'] == "agregarProducto") {
   $unit_id = $_POST['unit'];
   $category_id = $_POST['category'];
   $warehouse_id = $_POST['warehouse'];
-  $status_id = 1; // activo
 
-
-  $db = Database::connect();
-
-  $query = "INSERT INTO products VALUES (null,'$userID','$unit_id',$status_id,'$product_code','$name','$price_in','$price_out','$quantity','$min_quantity','$expiration',CURDATE())";
+  $query = "INSERT INTO products VALUES (null,'$userID','$warehouse_id','$unit_id',$statusID,'$product_code','$name','$price_in','$price_out','$quantity','$min_quantity','$expiration',CURDATE())";
 
   if ($db->query($query) === TRUE) {
 
@@ -73,11 +77,6 @@ if ($_POST['action'] == "agregarProducto") {
       insertIntoDB($query);
     }
 
-    if ($_POST['warehouse'] != "") {
-
-      $query = "INSERT INTO products_warehouses VALUES ($LAST_ID,'$warehouse_id');";
-      insertIntoDB($query);
-    }
   } else {
 
     echo "Error: " . $db->error;
@@ -158,4 +157,57 @@ if ($_POST['action'] == 'buscarImpuesto') {
 
   $element = $data->fetch_assoc();
   echo json_encode($element, JSON_UNESCAPED_UNICODE);
+}
+
+
+/**
+ * Desactivar Factura
+ ----------------------------------------------*/
+
+ if ($_POST['action'] == "desactivarProducto") {
+  $db = Database::connect();
+
+  $product_id = $_POST['productID'];
+
+  $query = "SELECT * FROM status WHERE status_name = 'Inactivo'";
+  $datos = $db->query($query);
+
+  $element = $datos->fetch_object();
+  $statusID = $element->status_id;
+
+  $query2 = "UPDATE products SET status_id = $statusID WHERE product_id = '$product_id'";
+  if ($db->query($query2) === TRUE) {
+
+    echo "listo";
+  
+  } else {
+
+    echo "Error: " . $db->error;
+  }
+}
+
+/**
+ * Activar Factura
+ ----------------------------------------------*/
+
+ if ($_POST['action'] == "activarProducto") {
+  $db = Database::connect();
+
+  $product_id = $_POST['productID'];
+
+  $query = "SELECT * FROM status WHERE status_name = 'Activo'";
+  $datos = $db->query($query);
+
+  $element = $datos->fetch_object();
+  $statusID = $element->status_id;
+
+  $query2 = "UPDATE products SET status_id = $statusID WHERE product_id = '$product_id'";
+  if ($db->query($query2) === TRUE) {
+
+    echo "listo";
+  
+  } else {
+
+    echo "Error: " . $db->error;
+  }
 }

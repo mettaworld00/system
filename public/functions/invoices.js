@@ -18,7 +18,6 @@ $(document).ready(function () {
 
     function reload() {
 
-
         $('#Detalle').load(location.href + " #Detalle");
 
         //  Generar No. factura
@@ -89,7 +88,8 @@ $(document).ready(function () {
             },
             success: function (res) {
 
-                if (res != '') {
+                try {
+
                     var data = JSON.parse(res);
 
                     $('#product_id').val(data[0].product_id);
@@ -139,8 +139,7 @@ $(document).ready(function () {
                         $('#tax_value').val('-')
                     }
 
-
-                } else {
+                } catch (error) {
 
                     $('#price_out').val('0.00');
                     $('#total_price').val('0.00');
@@ -152,6 +151,7 @@ $(document).ready(function () {
                     $('#quantity').attr("disabled", true);
                     $('#discount').attr("disabled", true);
                     $('#total_price').attr("disabled", true);
+                    $('#select2-description-container').empty();
                 }
 
 
@@ -177,7 +177,6 @@ $(document).ready(function () {
 
     function SearchItemForCode(product_code) {
 
-
         $.ajax({
             url: SITE_URL + "functions/invoices.php",
             method: "post",
@@ -187,7 +186,8 @@ $(document).ready(function () {
             },
             success: function (res) {
 
-                if (res != '') {
+                try {
+                   
                     var data = JSON.parse(res);
 
                     const format = new Intl.NumberFormat('en'); // Formato 0,000
@@ -240,9 +240,8 @@ $(document).ready(function () {
                     } else {
                         $('#tax_value').val('-')
                     }
-
-
-                } else {
+                    
+                } catch (error) {
 
                     $('#price_out').val('0.00');
                     $('#total_price').val('0.00');
@@ -253,8 +252,8 @@ $(document).ready(function () {
                     $('#quantity').attr("disabled", true);
                     $('#discount').attr("disabled", true);
                     $('#total_price').attr("disabled", true);
+                    $('#select2-description-container').empty();
                 }
-
 
             }
         });
@@ -321,13 +320,16 @@ $(document).ready(function () {
         e.preventDefault();
 
         var product_id = $('#product_id').val();
-        var total_price = $('#total_price').val().replace(',', '');
+        var total_price = $('#total_price').val().replace(/,/g, "");
         var quantity = $('#quantity').val();
-        var discount = $('#discount').val().replace(',', '');
+        var discount = $('#discount').val().replace(/,/g, "");
 
-        var price = $('#price_out').val().replace(',', '');
+        var price = $('#price_out').val().replace(/,/g, "");
         var tax = $('#tax_value').val() / 100;
 
+        console.log(total_price)
+
+        reduceStock(product_id, quantity);
 
         $.ajax({
             url: SITE_URL + "functions/invoices.php",
@@ -384,7 +386,7 @@ $(document).ready(function () {
 
         if (quantity <= stock) {
 
-            var Precio_total = $('#quantity').val() * $('#price_out').val().replace(',', '') - $('#discount').val();
+            var Precio_total = $('#quantity').val() * $('#price_out').val().replace(/,/g, "") - $('#discount').val();
             $('#total_price').val(format.format(Precio_total));
 
             // Ocultar la cantidad si es menor que 1
@@ -518,10 +520,14 @@ $(document).ready(function () {
 
 
                     },
+                    beforeSend: function () {
+                        $('.loader').show();
+                    },
                     success: function (res) {
 
                         console.log(res);
                         reload();
+                        $('.loader').hide();
                     }
 
                 });
@@ -617,7 +623,6 @@ $(document).ready(function () {
         e.preventDefault();
 
         cancelSale();
-
     })
 
     function cancelSale() {
@@ -635,18 +640,21 @@ $(document).ready(function () {
                         data: {
                             action: "anularVenta",
                             userID: $('#user_id').val()
-
+                        },
+                        beforeSend: function (){
+                            $('.loader').show()
                         },
                         success: function (res) {
 
                             $('#Detalle').load(location.href + " #Detalle");
-                            alertify.success('Listo!');
+                            $('.loader').hide()
+                           
 
                         }
                     });
                 },
                 function () {
-                    alertify.error('Cancel');
+                  
                 });
         }
     }
@@ -665,10 +673,10 @@ $(document).ready(function () {
     function addItemToDetail() {
 
         var product_id = $('#product_id').val();
-        var total_price = $('#total_price').val().replace(',', '');
+        var total_price = $('#total_price').val().replace(/,/g, "");
         var invoice_id = $('#invoice_id').val();
         var quantity = $('#quantity').val();
-        var discount = $('#discount').val().replace(',', '');
+        var discount = $('#discount').val().replace(/,/g, "");
 
         var price = $('#price_out').val();
         var tax = $('#tax_value').val() / 100;
@@ -751,7 +759,7 @@ function invoiceTotal() {
             var totalDB = parseFloat(data.total) + parseFloat(data.tax)
 
             var html = `
-                        <div class="row col-md-12 text-center">
+                        <div class="row col-md-12">
                         <div class="col-sm-6 priceContent">
                             <span class="text-right">Subtotal</span>
                             <span class="text-right">-Desc.</span>
@@ -766,7 +774,7 @@ function invoiceTotal() {
                         </div>
                     </div>
 
-                    <div class="row col-md-12 text-center finalTotalContent">
+                    <div class="row col-md-12 finalTotalContent">
                         <div class="col-sm-6 priceContent">
                             <span class="text-right">Total</span>
                         </div>
@@ -860,7 +868,7 @@ function detailTotal() {
             var totalDB = parseFloat(data.total) + parseFloat(data.tax);
 
             var html = `
-                        <div class="row col-md-12 text-center">
+                        <div class="row col-md-12">
                         <div class="col-sm-6 priceContent">
                             <span class="text-right">Subtotal</span>
                             <span class="text-right">-Desc.</span>
@@ -875,14 +883,14 @@ function detailTotal() {
                         </div>
                     </div>
 
-                    <div class="row col-md-12 text-center finalTotalContent">
+                    <div class="row col-md-12 finalTotalContent">
                         <div class="col-sm-6 priceContent">
                             <span class="text-right">Total RD$</span>
                         </div>
 
                         <div class="col-sm-6 priceContent">
                             <input type="hidden" name="purchase" value="${totalDB}" id="purchase">
-                            <span>${total + '.00'}</span>
+                            <span>${total}</span>
                         </div>
                     </div>`;
 
@@ -893,7 +901,7 @@ function detailTotal() {
     });
 }
 
-// Eliminar detalle de factura
+// Eliminar del detalle de factura
 
 function deleteInvoiceDetail(invoice_detail_id, invoice_id, product_id, quantity, stock) {
 
@@ -908,18 +916,21 @@ function deleteInvoiceDetail(invoice_detail_id, invoice_id, product_id, quantity
                     invoice_detail_id: invoice_detail_id
 
                 },
+                beforeSend: function () {
+                    $('.loader').show();
+                },
                 success: function (res) {
                     if (res == 1) {
 
 
                         recoveryStock(product_id, quantity, stock); // Recuperar stock
-                        updatePriceInvoice(invoice_id); // Actualizar priceo de factura
+                        updatePriceInvoice(invoice_id); // Actualizar precio de factura
 
                         $('#Detalle').load(location.href + " #Detalle");
                         detailTotal() // Calcular detalle de factura
 
+                        $('.loader').hide();
 
-                        alertify.success('Listo');
                     } else {
                         alertify.error('No se ha podido eliminar este compra');
                     }
@@ -929,7 +940,7 @@ function deleteInvoiceDetail(invoice_detail_id, invoice_id, product_id, quantity
 
         },
         function () {
-            alertify.error('Cancelado');
+           
         });
 }
 
@@ -952,9 +963,34 @@ function updatePriceInvoice(invoice_id) {
     });
 }
 
+// Desactivar factura
 
+function disabledInvoice(invoice_id) {
 
+    alertify.confirm("<i class='text-warning fas fa-exclamation-circle'></i> Desactivar factura", "¿Está seguro de que desea desactivar esta factura? Esta operación no se puede deshacer. ",
+        function () {
 
+            $.ajax({
+                type: "post",
+                url: SITE_URL + "functions/invoices.php",
+                data: {
+                    invoiceID: invoice_id,
+                    action: 'desactivarFactura'
+                },
+                beforeSend: function () {
+                    $('.loader').show();
+                },
+                success: function (res) {
+                    $('.loader').hide();
+                    $('#example').load(location.href + " #example");
+                }
+            });
+
+        },
+        function () {
+            
+        });
+}
 
 
 
@@ -991,5 +1027,3 @@ function showCreditData(invoice_id) {
         }
     });
 }
-
-

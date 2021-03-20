@@ -42,7 +42,7 @@
                                 <option value="<?= $customer->customer_id ?>"><?= $customer->customer_name ?></option>
                             <?php endwhile; ?>
                         </select>
-                        <a class="ml-1 mt-1" data-toggle="modal" data-target="#staticBackdrop"><i class="fas fa-plus-circle"></i></a>
+                        <a class="ml-1 mt-1" data-toggle="modal" data-target="#modalCustomer"><i class="fas fa-plus-circle"></i></a>
                     </div>
                 </div>
 
@@ -122,8 +122,8 @@
             <th>Importe</th>
             <th></th>
         </thead>
+        
         <tbody>
-            <form>
                 <tr>
 
                     <td>
@@ -142,7 +142,6 @@
                     <td><input id="totalServicePrice" class="invisible-input" type="text" name="" disabled></td>
                     <td> <a id="addService" href="#"><i class="far fa-plus-square"></i> Agregar</a></td>
                 </tr>
-            </form>
         </tbody>
     </table> <br>
 
@@ -175,7 +174,7 @@
 
     <div class="totalContainer clearfix ">
         <div class="floatContainer">
-            <div class="row col-md-12 text-center">
+            <div class="row col-md-12">
                 <div class="col-sm-6 priceContent">
                     <span class="text-right">Subtotal</span>
                     <span class="text-right">-Desc.</span>
@@ -183,19 +182,19 @@
                 </div>
 
                 <div class="col-sm-6 priceContent">
-                    <input class="invisible-input" type="text" name="" value="" id="total_service_subtotal" disabled>
-                    <input class="invisible-input" type="text" name="" value="" id="total_service_discount" disabled>
+                    <input class="invisible-input text-left" type="text" name="" value="" id="total_service_subtotal" disabled>
+                    <input class="invisible-input text-left" type="text" name="" value="" id="total_service_discount" disabled>
 
                 </div>
             </div>
 
-            <div class="row col-md-12 text-center finalTotalContent">
+            <div class="row col-md-12  finalTotalContent">
                 <div class="col-sm-6 priceContent">
-                    <span class="text-right">Total RD$</span>
+                    <span class="text-right">Total</span>
                 </div>
 
                 <div class="col-sm-6 priceContent">
-                    <input class="invisible-input" type="text" name="" value="" id="total_service" disabled>
+                    <input class="invisible-input text-left" type="text" name="" value="" id="total_service" disabled>
                 </div>
             </div>
         </div>
@@ -239,7 +238,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="">Precio</label>
+                            <label for="">Precio<span class="text-danger">*</span></label>
                             <input class="form-control form-control-sm" type="text" name="" id="price_service_md" required>
                         </div>
 
@@ -251,8 +250,71 @@
                     </div>
 
                     <div class="mt-1 modal-footer">
-                        <button type="submit" class="btn btn-sm btn-primary" id="addService">Guardar</button>
+                        <button type="submit" class="btn btn-sm btn-primary ml-2" id="addService">Guardar</button>
                         <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Cancelar</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal contact -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalCustomer" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Nuevo contacto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" onsubmit="event.preventDefault(); AddContact();">
+                    <div class="row col-md-12">
+
+                        <div class="form-group col-md-6 border-right">
+                            <div class="form-group">
+                                <label for="">Nombre<span class="text-danger">*</span></label>
+                                <input class="form-control form-control-sm" type="text" name="name" id="customer_name_md" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">RNC</label>
+                                <input class="form-control form-control-sm" type="number" name="" id="rnc_md">
+                            </div>
+
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <div class="form-group">
+                                <label for="">Télefono 1</label>
+                                <input class="form-control form-control-sm" type="number" name="" id="telephone1_md">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Télefono 2</label>
+                                <input class="form-control form-control-sm" type="number" name="" id="telephone2_md">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Correo</label>
+                                <input class="form-control form-control-sm" type="text" name="" id="email_md">
+                            </div>
+
+                        </div>
+                    </div> <!-- Row col-md-12 -->
+
+                    <div class="mt-1 modal-footer">
+                        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-sm btn-primary" id="ad">Guardar</button>
                     </div>
 
                 </form>

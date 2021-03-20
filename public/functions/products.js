@@ -2,22 +2,13 @@
 
        const SITE_URL = "http://localhost/sistem/";
 
-
+       // Default
        $('#product_quantity').val('1');
-
-       //    $('#inventoryItem').hide();
+       $('#min_quantity').val('1');
        $('.list').hide();
 
-       //    $('#inventoryCheck').change((e) => {
-       //        e.preventDefault();
-
-       //        $('#inventoryItem').slideToggle('fast');
-       //    })
-
-
-       // Lista de precios
-       $('.price_list').hide();
-
+ 
+        // Activar lista de precios
        $('.price_list').on('click', (e) => {
            e.preventDefault();
 
@@ -81,7 +72,7 @@
 
        function clcFinalPrice(tax = 0) {
 
-           //    $('.price_list').slideDown();
+              $('.price_list').slideDown();
 
            const format = new Intl.NumberFormat('en');
 
@@ -98,7 +89,7 @@
 
                    $('#FinalPrice_out').val(product_price);
                    $('#precioTotal').val(format.format(product_price) + '.00');
-                  // clcPrice_list(product_price);
+                   clcPrice_list(product_price);
 
                }
 
@@ -113,13 +104,9 @@
 
                $('#FinalPrice_out').val(price_out);
                $('#precioTotal').val(format.format(price_out) + '.00');
-              // clcPrice_list(price_out);
+               clcPrice_list(price_out);
 
            }
-
-
-
-
        }
 
 
@@ -132,7 +119,6 @@
                e.preventDefault();
 
                var list_name = $('#price_list :selected').text();
-
 
                const format = new Intl.NumberFormat('en');
                var value = $('#price_list').val();
@@ -150,201 +136,119 @@
 
                }
 
-
            });
 
        }
 
-       // Agregar lista a producto
+       /**
+        * Lista de precios
+       ----------------------------------------------------------------------------------- */
 
-       $('.addlist').on('click', (e) => {
-           e.preventDefault();
+       let ArrayPriceList = [];
 
-           var list_name = $('#price_list :selected').text(); // Nombre
-           var list_id = $('#price_list :selected').attr('list_id'); // Id
-           var list_value = $('#list_value').val(); // Valor final
+    $('.addlist').on('click', (e) => {
+        e.preventDefault();
 
+        let data = {
 
-           addlistToLocalStorage(list_id, list_name, list_value);
-       })
+            id: $('#price_list :selected').attr('list_id'),
+            name: $('#price_list :selected').text(), 
+            value: $('#list_value').val()
 
-       function addlistToLocalStorage(id, name, value) {
+        }
 
-           let price_list = {
-               id: id,
-               name: name,
-               value: value
-           };
+        // Buscar coincidencia si existe en el localStorage
+        FindAMatch(ArrayPriceList)
 
-           if (localStorage.getItem('price_list1')) {
+        function FindAMatch(arr) {
 
+            if (arr.length < 1) {
 
+                arr.push(data);
+                createDB();
 
-               var length = $('.list_titles li').length;
-               var list_length = length + 1;
+            } else {
 
-               localStorage.setItem("price_list" + list_length, JSON.stringify(price_list));
-               addListTitles(list_length);
+                let found = arr.find(element => element.name == data.name)
 
-           } else {
+                if (found == undefined) {
 
-               localStorage.setItem("price_list1", JSON.stringify(price_list));
-               addListTitles(1);
+                    arr.push(data);
+                    createDB();
+                }
 
-           }
+            }
+        }
 
-
-           // Agregar
-
-           function addListTitles(id) {
-
-               var listData = localStorage.getItem("price_list" + id);
-               var data = JSON.parse(listData); // Json
-               // console.log(JSON.parse(listData));
-
-               var listHTML = '<li>' + data.name + ' - ' + '$' + data.value + '</li>';
-               $('.list_titles').append(listHTML);
-
-           }
+    })
 
 
+    function createDB() {
+
+        localStorage.setItem('price_list', JSON.stringify(ArrayPriceList));
+        showDB(); // Mostrar DB
+
+    }
+
+    let arrayLocalStorage;
+
+    function showDB() {
+
+        document.querySelector('.list_titles').innerHTML = ""; // Vaciar detalle
+
+        if (localStorage.getItem("price_list")) {
+            arrayLocalStorage = JSON.parse(localStorage.getItem("price_list"));
+        }
+
+        // Loop de los servicios en localStorage 
+        arrayLocalStorage.forEach((element, index) => {
+            var listHTML = '<li>' + element.name + ' - ' + '$' + element.value + '</li>';
+            $('.list_titles').append(listHTML);
+        });
+
+    }
 
 
-       }
+
+
+
 
 
 
        /**
-        * Crear producto
-       ------------------------------------------------*/
+        * Actualizar producto
+       ------------------------------------------- */
+       if ($('#tax').val() != null) {
+           searchTax($('#select2-tax-container').attr('title'))
+       }; // Calcular el impuesto
 
-       $('#createProduct').on('click', (e) => {
+       $('#updateProduct').on('click', (e) => {
            e.preventDefault();
-
-           let data = {
-
-               // Info Product
-
-               userID: $('#user_id').val(),
-               name: $('#product_name').val(),
-               product_code: $('#product_code').val(),
-               price_out: $('#inputPrice_out').val(),
-               price_in: $('#inputPrice_in').val(),
-               quantity: $('#product_quantity').val(),
-               min_quantity: $('#min_quantity').val(),
-               expiration: $('#inputExpiration').val(),
-
-               // Keys
-
-               unit: $('#unit').val(),
-               tax: $('#tax').val(),
-               category: $('#category').val(),
-               warehouse: $('#warehouse').val()
-           }
-
-
-           addNewProduct(data);
-
-       })
-
-       function addNewProduct(data) {
 
            $.ajax({
                type: "post",
                url: SITE_URL + "functions/products.php",
                data: {
-                   userID: data.userID,
-                   name: data.name,
-                   product_code: data.product_code,
-                   price_out: data.price_out,
-                   price_in: data.price_in,
-                   quantity: data.quantity,
-                   min_quantity: data.min_quantity,
-                   expiration: data.expiration,
-                   tax: data.tax,
-                   unit: data.unit,
-                   category: data.category,
-                   warehouse: data.warehouse,
-                   action: 'agregarProducto'
+                   product_id: $('#productId').val(),
+                   name: $('#product_name').val(),
+                   product_code: $('#product_code').val(),
+                   price_out: $('#inputPrice_out').val(),
+                   price_in: $('#inputPrice_in').val(),
+                   quantity: $('#productQuantity').val(),
+                   min_quantity: $('#min_quantity').val(),
+                   unit: $('#unit').val(),
+                   tax: $('#tax').val(),
+                   category: $('#category').val(),
+                   warehouse: $('#warehouse').val(),
+                   action: 'actualizarProducto'
                },
                success: function (res) {
                    console.log(res)
-
-                   var length = $('.list_titles li').length;
-                   var list_length = length + 1;
-
-                   for (let index = 1; index < list_length; index++) {
-
-                       var price_list = JSON.parse(localStorage.getItem('price_list' + index));
-
-                       if (localStorage.getItem('price_list' + index)) {
-
-                           addPriceList(res, price_list.id);
-
-
-                       } else {
-                           console.log("no hay price list");
-                       }
-
-                   }
-
-                   localStorage.clear();
                }
            });
-
-           function addPriceList(product_id, list_id) {
-
-               $.ajax({
-                   type: "post",
-                   url: SITE_URL + "functions/products.php",
-                   data: {
-                       list_id: list_id,
-                       product_id: product_id,
-                       action: 'agregarPreciosAlProducto'
-
-                   },
-                   success: function (res) {
-                       console.log(res)
-                   }
-               });
-           }
+       })
 
 
-       }
-
-     /**
-      * Actualizar producto
-     ------------------------------------------- */
-    if($('#tax').val() != null) { searchTax($('#select2-tax-container').attr('title')) }; // Calcular el impuesto
-     
-
-     $('#updateProduct').on('click',(e)=>{
-         e.preventDefault();
-
-        $.ajax({
-            type: "post",
-            url: SITE_URL + "functions/products.php",
-            data: {
-                product_id: $('#productId').val(),
-                name: $('#product_name').val(),
-                product_code: $('#product_code').val(),
-                price_out: $('#inputPrice_out').val(),
-                price_in: $('#inputPrice_in').val(),
-                quantity: $('#productQuantity').val(),
-                min_quantity: $('#min_quantity').val(),
-                unit: $('#unit').val(),
-                tax: $('#tax').val(),
-                category: $('#category').val(),
-                warehouse: $('#warehouse').val(),
-                action: 'actualizarProducto'
-            },
-            success: function (res) {
-                console.log(res)
-            }
-        });
-
-       
-     })
 
 
 
@@ -352,36 +256,136 @@
    }) // Ready
 
 
+   /**
+    * Crear producto
+    *------------------------------------------------*/
 
-
-
-
-
-
-
-
-   // botón de guardar y crear nuevo 
-
-   $('#createNewProduct').on('click', (e) => {
-       e.preventDefault();
-
-       var data = $('#formAddProduct').serialize();
-
-       crearNuevoProducto(data);
-   })
-
-   function crearNuevoProducto(data) {
+   function addNewProduct(user_id) {
 
        $.ajax({
            type: "post",
-           url: "http://localhost/sistem/product/save",
-           data: data,
-           success: function (response) {
-               $('input[type="text"]').val('');
-               $('input[type="number"]').val('');
-               $('textarea').val('');
+           url: SITE_URL + "functions/products.php",
+           data: {
+               userID: user_id,
+               name: $('#product_name').val(),
+               product_code: $('#product_code').val(),
+               price_out: $('#inputPrice_out').val(),
+               price_in: $('#inputPrice_in').val(),
+               quantity: $('#product_quantity').val(),
+               min_quantity: $('#min_quantity').val(),
+               expiration: $('#inputExpiration').val(),
+               // Keys
+               unit: $('#unit').val(),
+               tax: $('#tax').val(),
+               category: $('#category').val(),
+               warehouse: $('#warehouse').val(),
+               action: 'agregarProducto'
+           },
+           beforeSend: function () {
+               $('.loader').show();
+           },
+           success: function (res) {
+               console.log(res)
+
+               var length = $('.list_titles li').length;
+               var list_length = length + 1;
+
+               for (let index = 1; index < list_length; index++) {
+
+                   var price_list = JSON.parse(localStorage.getItem('price_list' + index));
+
+                   if (localStorage.getItem('price_list' + index)) {
+
+                       addPriceList(res, price_list.id);
+
+                   } else {
+                       console.log("no hay price list");
+                   }
+
+               }
+
+               localStorage.clear();
+               $('.loader').hide();
            }
        });
+
+       function addPriceList(product_id, list_id) {
+
+           $.ajax({
+               type: "post",
+               url: SITE_URL + "functions/products.php",
+               data: {
+                   list_id: list_id,
+                   product_id: product_id,
+                   action: 'agregarPreciosAlProducto'
+               },
+               success: function (res) {
+                   console.log(res)
+               }
+           });
+       }
+
+   }
+
+
+   // Desactivar producto
+
+   function disableProduct(product_id) {
+
+       alertify.confirm("<i class='text-warning fas fa-exclamation-circle'></i> Desactivar producto", "¿Desea desactivar este producto? ",
+           function () {
+
+               $.ajax({
+                   type: "post",
+                   url: SITE_URL + "functions/products.php",
+                   data: {
+                       productID: product_id,
+                       action: 'desactivarProducto'
+                   },
+                   beforeSend: function () {
+                       $('.loader').show();
+                   },
+                   success: function (res) {
+
+                       $('#example').load(" #example");
+                       $('.loader').hide();
+                   }
+               });
+
+           },
+           function () {
+
+           });
+   }
+
+
+   // Activar producto
+
+   function enableProduct(product_id) {
+
+       alertify.confirm("Activar producto", "¿Desea activar este producto? ",
+           function () {
+
+               $.ajax({
+                   type: "post",
+                   url: SITE_URL + "functions/products.php",
+                   data: {
+                       productID: product_id,
+                       action: 'activarProducto'
+                   },
+                   beforeSend: function () {
+                       $('.loader').show();
+                   },
+                   success: function (res) {
+                       $('#example').load(" #example");
+                       $('.loader').hide();
+                   }
+               });
+
+           },
+           function () {
+
+           });
    }
 
    // Eliminar producto
@@ -405,7 +409,6 @@
                        if (res == 1) {
 
                            $('.table').load(location.href + " .table");
-
 
                            alertify.success('Item eliminado');
                        } else {

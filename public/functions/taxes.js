@@ -4,39 +4,56 @@ $(document).ready(function () {
 
 
 
-     /**
-     * Agregar impuesto
-     ------------------------------------------*/
 
-     $('#addTax').on('click', (e) => {
-        e.preventDefault();
- 
-        $.ajax({
-            type: "post",
-            url: SITE_URL + "functions/taxes.php",
-            data: {
-                userID: $('#user_id').val(),
-                name: $('#tax_name').val(),
-                comment: $('#tax_comment').val(),
-                value: $('#tax_value').val(),
-                action: 'agregarImpuesto'
-            },
-            success: function (res) {
-                     console.log(res)
-            }
-        });
-    })
 
 
 }) // Ready
 
 
+/**
+    * Agregar impuesto
+    ------------------------------------------*/
+
+function AddTax(user_id) {
+
+    $.ajax({
+        type: "post",
+        url: SITE_URL + "functions/taxes.php",
+        data: {
+            userID: user_id,
+            name: $('#tax_name').val(),
+            comment: $('#tax_comment').val(),
+            value: $('#tax_value').val(),
+            action: 'agregarImpuesto'
+        },
+        beforeSend: function () {
+            $('.loader').show();
+        },
+        success: function (res) {
+
+            try {
+
+                if (res != 1) {
+                    throw new Error('No se ha podido insertar este impuesto');
+                }
+
+            } catch (error) {
+
+                console.log(error)
+                $('.loader').hide();
+            }
+
+            $('.loader').hide();
+        }
+    });
+
+}
 
 /**
  * Eliminar Impuesto
  ----------------------------------*/
 
- function deleteTax(id){
+function deleteTax(id) {
 
     $.ajax({
         type: "post",
@@ -49,4 +66,4 @@ $(document).ready(function () {
             console.log(res)
         }
     });
- }
+}
