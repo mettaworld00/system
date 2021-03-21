@@ -169,7 +169,7 @@ while ($element = $invoice->fetch_object()) : ?>
                         </td>
                     </tr>
                 </tbody>
-            <?php endwhile; ?>3
+            <?php endwhile; ?>
         </table>
 
 

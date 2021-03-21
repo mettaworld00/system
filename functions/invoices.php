@@ -225,10 +225,14 @@ if ($_POST['action'] == "buscarCoincidencia") {
     $query = "SELECT *FROM temp_detail WHERE product_id = '$product_id' AND user_id = '$user_id'";
     $datos = $db->query($query);
 
-    $result = $datos->fetch_assoc();
-    echo $result['product_id'];
+    if ($datos->num_rows > 0) {
 
+      $result = $datos->fetch_assoc();
+      echo $result['product_id'];
 
+    }
+
+    
     // verificar si existe en el detalle de la factura
 
   } else if ($invoice_id > 0) {

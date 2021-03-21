@@ -39,14 +39,22 @@
 
 <!-- Gráficos -->
 
-<div class="generalContainer">
-  <div class="row">
-    <div class="col-sm-6">
+
+
+<div class="container-chart">
+  <div class="row hola">
+
+    <div class="col-sm-4 chart">
       <canvas id="SalesOfWeek" ></canvas>
     </div>
+
+    <div class="col-sm-4 chart">
+      <canvas id="SalesOfMonth" ></canvas>
+    </div>
+    
   </div>
 </div>
-<br><br>
+
 
 <h4>Ventas del día</h4>
 <div class="generalContainer">
