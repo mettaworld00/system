@@ -327,8 +327,6 @@ $(document).ready(function () {
         var price = $('#price_out').val().replace(/,/g, "");
         var tax = $('#tax_value').val() / 100;
 
-        console.log(total_price)
-
         reduceStock(product_id, quantity);
 
         $.ajax({
