@@ -999,7 +999,6 @@ function disabledInvoice(invoice_id) {
 
 
 
-
 // Actualizar factura a credito
 
 function showCreditData(invoice_id) {

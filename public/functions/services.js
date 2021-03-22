@@ -550,7 +550,7 @@ $(document).ready(function () {
             },
             success: function (res) {
 
-                updatePriceInvoice(invoice_id);
+                updatePriceInvoiceService(invoice_id);
 
                 $('#Detalle').load(location.href + " #Detalle");
 
@@ -605,7 +605,7 @@ function AddService() {
 
 // Eliminar del detalle de factura
 
-function deleteInvoiceDetail(service_detail_id, invoice_id) {
+function deleteServiceInvoiceDetail(service_detail_id, invoice_id) {
 
     alertify.confirm("Eliminar compra", "¿Desea eliminar esta compra? ",
         function () {
@@ -625,7 +625,7 @@ function deleteInvoiceDetail(service_detail_id, invoice_id) {
 
                     if (res == 1) {
 
-                        updatePriceInvoice(invoice_id); // Actualizar precio de factura
+                        updatePriceInvoiceService(invoice_id); // Actualizar precio de factura
 
                         $('#Detalle').load(location.href + " #Detalle");
                         // detailTotal() // Calcular detalle de factura
@@ -649,7 +649,7 @@ function deleteInvoiceDetail(service_detail_id, invoice_id) {
 
 // Actualizar precio de factura
 
-function updatePriceInvoice(invoice_id) {
+function updatePriceInvoiceService(invoice_id) {
 
     var action = "actualizarFactura";
 

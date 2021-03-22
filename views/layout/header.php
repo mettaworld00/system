@@ -65,7 +65,7 @@
 
   <!-- ChartJS -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
- 
+
 </head>
 
 <body>
@@ -73,16 +73,41 @@
   <?php if (isset($_SESSION['admin']) || isset($_SESSION['identity'])) : ?>
 
     <div class="loader">
-    <div class="loading">
-      <div class="load">
-       
-      <div class="loadingio-spinner-spin-cx0o90u04yc"><div class="ldio-1q5n8ygi9ox">
-<div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div>
-</div></div>
+      <div class="loading">
+        <div class="load">
+
+          <div class="loadingio-spinner-spin-cx0o90u04yc">
+            <div class="ldio-1q5n8ygi9ox">
+              <div>
+                <div></div>
+              </div>
+              <div>
+                <div></div>
+              </div>
+              <div>
+                <div></div>
+              </div>
+              <div>
+                <div></div>
+              </div>
+              <div>
+                <div></div>
+              </div>
+              <div>
+                <div></div>
+              </div>
+              <div>
+                <div></div>
+              </div>
+              <div>
+                <div></div>
+              </div>
+            </div>
+          </div>
 
 
+        </div>
       </div>
-    </div>
     </div>
 
     <section class="contenido">
@@ -101,49 +126,44 @@
             <li class="dropdown-1">
               <div class="link"><i class="mr-3 fas fa-arrow-circle-down"></i>Ventas <i class="fas fa-chevron-down"></i></div>
               <ul class="submenu ">
-                <li><a href="<?= base_url ?>invoices/addpurchase">Factura de venta</a></li>
-                <li><a href="<?= base_url ?>invoices/index">Facturas</a></li>
-                <li><a href="<?= base_url ?>">Pagos recibidos</a></li>
+                <li class="page"><a href="<?= base_url ?>invoices/index">Factura de venta</a> <a href="<?= base_url ?>invoices/addpurchase"><i class="fas fa-plus-circle"></i></a></li>
+                <li class="page"><a href="<?= base_url ?>services/invoices">Factura de servicio</a> <a href="<?= base_url ?>services/addpurchase"><i class="fas fa-plus-circle"></i></a></li>
+                <li class="page"><a href="<?= base_url ?>">Pagos recibidos</a></li>
 
               </ul>
             </li>
 
             <li class="dropdown-2">
-              <div class="link"><i class="mr-3 fas fa-user-tie"></i>Servicios <i class="fas fa-chevron-down"></i></div>
-              <ul class="submenu">
-                <li><a href="<?= base_url ?>services/addpurchase">Factura de servicio</a></li>
-                <li><a href="<?= base_url ?>services/invoices">Facturas</a></li>
-                <li><a href="<?= base_url ?>services/index">Servicios</a></li>
+              <div class="link"><i class="mr-3 fas fa-box"></i>Inventario <i class="fas fa-chevron-down"></i></div>
+              <ul class="submenu ">
+                <li class="page"><a href="<?= base_url ?>product/index">Items de venta</a> <a href="<?= base_url ?>product/add"><i class="fas fa-plus-circle"></i></a></li>
+                <li class="page"><a href="<?= base_url ?>inventory_control/index">Ajustes de inventario</a> <a href="<?= base_url ?>inventory_control/add"><i class="fas fa-plus-circle"></i></a></li>
+                <li><a href="<?= base_url ?>inventory_control/inventory">Valor de inventario</a></li>
+                <li class="page"><a href="<?= base_url ?>price_list/index">Lista de précios</a> <a href="<?= base_url ?>price_list/add"><i class="fas fa-plus-circle"></i></a></li>
+                <li class="page"><a href="<?= base_url ?>services/index">Servicios</a> <a href="<?= base_url ?>services/add"><i class="fas fa-plus-circle"></i></a></li>
+                <!-- <li class="page"><a href="">Almacenes</a></li> -->
+                <li class="page"><a href="<?= base_url ?>categories/index">Categorías</a> <a href="<?= base_url ?>categories/add"><i class="fas fa-plus-circle"></i></a></li>
+                <li class="page"><a href="<?= base_url ?>taxes/index">Impuestos</a> <a href="<?= base_url ?>taxes/add"><i class="fas fa-plus-circle"></i></a></li>
+
               </ul>
             </li>
 
             <li class="dropdown-3">
-              <div class="link"><i class="mr-3 fas fa-box"></i>Inventario <i class="fas fa-chevron-down"></i></div>
-              <ul class="submenu ">
-                <li><a href="<?= base_url ?>product/index">Items de venta</a></li>
-                <li><a href="<?= base_url ?>inventory_control/index">Ajustes de inventario</a></li>
-                <li><a href="<?= base_url ?>inventory_control/inventory">Valor de inventario</a></li>
-                <li><a href="<?= base_url ?>price_list/index">Lista de précios</a></li>
-                <!-- <li><a href="">Almacenes</a></li> -->
-                <li><a href="<?= base_url ?>categories/index">Categorías</a></li>
-                <li><a href="<?= base_url ?>taxes/index">Impuestos</a></li>
-
+              <div class="link"><i class="mr-3 fas fa-address-book"></i>Contactos <i class="fas fa-chevron-down"></i></div>
+              <ul class="submenu">
+                <li class="page"><a href="<?= base_url ?>contacts/index">Contactos</a> <a href="<?= base_url ?>contacts/add"><i class="fas fa-plus-circle"></i></a></li>
               </ul>
             </li>
 
-            <!-- <li class="dropdown-4">
-            <div class="link"><i class="mr-3 fas fa-address-book"></i>Contactos <i class="fas fa-chevron-down"></i></div>
-            <ul class="submenu">
-              <li><a href="<?= base_url ?>contacts/index">Contactos</a></li>
-            </ul>
-          </li> -->
-
-            <li class="dropdown-5">
+            <li class="dropdown-4">
               <div class="link"><i class="mr-3 fas fa-project-diagram"></i>Reportes <i class="fas fa-chevron-down"></i></div>
               <ul class="submenu">
                 <li><a href="<?= base_url ?>">Ventas</a></li>
               </ul>
             </li>
+
+
+
 
             <!-- <li class="dropdown-6">
             <div class="link"><i class="mr-3 fas fa-users"></i>Usuarios <i class="fas fa-chevron-down"></i></div>

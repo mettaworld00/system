@@ -39,16 +39,14 @@
 
 <!-- Gráficos -->
 
-
-
 <div class="container-chart">
-  <div class="row hola">
+  <div class="charts col-sm-12">
 
-    <div class="col-sm-4 chart">
+    <div class="col-sm-6 chart">
       <canvas id="SalesOfWeek" ></canvas>
     </div>
 
-    <div class="col-sm-4 chart">
+    <div class="col-sm-6 chart">
       <canvas id="SalesOfMonth" ></canvas>
     </div>
     

@@ -2,7 +2,7 @@
 
 require_once 'modelo.php';
 
-class Invoices extends ModeloBase
+class Transaction extends ModeloBase
 {
     public function __construct()
     {

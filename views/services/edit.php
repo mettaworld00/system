@@ -154,7 +154,7 @@ while ($element = $invoice->fetch_object()) : ?>
                         <td><?= number_format($detail->total_price) ?></td>
                         <td>
                             <span class="action-delete <?php if ($element->status_name != 'Por cobrar') { ?> action-disable  <?php } ?>" 
-                            <?php if ($element->status_name == 'Por cobrar') { ?> onclick="deleteInvoiceDetail('<?= $detail->service_detail_id ?>','<?= $element->service_invoice_id ?>')" <?php } ?>>
+                            <?php if ($element->status_name == 'Por cobrar') { ?> onclick="deleteServiceInvoiceDetail('<?= $detail->service_detail_id ?>','<?= $element->service_invoice_id ?>')" <?php } ?>>
                             <i class="far fa-trash-alt"></i>
                             </span>
                         </td>

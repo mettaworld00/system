@@ -41,14 +41,16 @@ if ($_POST['action'] == 'ventaMensual') {
 
     $warehouseID = $_SESSION['identity']->warehouse_id;
 
+    $query1 = "SET @@lc_time_names = 'es_DO';";
 
-    $query1 = "SELECT sum(i.money_received), monthname(i.created_at) FROM invoices i 
+    $query2 = "SELECT sum(i.money_received), monthname(i.created_at) FROM invoices i 
                INNER JOIN users u ON i.user_id = u.user_id
                INNER JOIN status s on s.status_id = i.status_id
                WHERE  s.status_name != 'Anulada' AND u.warehouse_id = '$warehouseID' AND i.created_at >= date_sub(curdate(), INTERVAL 12 MONTH) 
                GROUP BY monthname(i.created_at)";
 
-    $datos = $db->query($query1);
+             $db->query($query1);
+    $datos = $db->query($query2);
 
     if ($datos->num_rows > 0){
 

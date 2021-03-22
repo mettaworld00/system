@@ -266,9 +266,11 @@ Bootstrap 4 Customs
 
 
 /*Clase Contenido general */
-.hola {
+.charts {
     display: flex;
     justify-content: space-around;
+    padding-left: 0px !important;
+  
 }
 .chart {
     padding: 30px 10px 30px 10px;
@@ -500,6 +502,23 @@ Sidebar
 * Submenu
 -----------------------------*/
 
+.page {
+    display: flex;
+}
+
+.page a + a  {
+    display: none !important;
+    width: 10%;
+    padding: 12px 0;
+}
+
+.page:hover a + a {
+    display: block !important;
+    -webkit-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+}
+
 .submenu {
     display: none;
     background: #444359;
@@ -508,17 +527,23 @@ Sidebar
 
 .submenu a {
     display: block;
+    width: 90%;
     text-decoration: none;
     color: #d9d9d9;
     padding: 12px;
+    padding-right: 30px;
     padding-left: 42px;
     -webkit-transition: all 0.25s ease;
     -o-transition: all 0.25s ease;
     transition: all 0.25s ease;
 }
 
-.submenu a:hover {
+.submenu li:hover {
     background: #6a3cc0;
+}
+
+.submenu a:hover {
+    /* background: #6a3cc0; */
     color: #FFF;
     text-decoration: none;
 }
@@ -811,6 +836,7 @@ input.input-border-botton {
     margin-left: 3px;
     font-size: 16px;
     color: #f0a00b;
+    cursor: pointer;
 }
 
 .action-view {

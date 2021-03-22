@@ -188,6 +188,7 @@ if ($_POST['action'] == "agregarCompra") {
 
  $query2 = "SELECT  *FROM service_invoices WHERE service_invoice_id = '$invoice_id'";
  $datos2 = $db->query($query2);
+ 
  $element2 = $datos2->fetch_object();
 
  $money_received = $element2->money_received; // Total recibido

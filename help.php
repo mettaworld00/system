@@ -274,7 +274,9 @@ class Help
     * Transaciones
    ------------------------------------------------ */
 
-   public static function showTransactionIN($number)
+   // Función para mostrar los datos de una factura a crédito
+
+   public static function showTransactionIN($id)
    {
 
       $db = Database::connect();
@@ -287,7 +289,7 @@ class Help
       INNER JOIN status s ON i.status_id = s.status_id 
       INNER JOIN payment_methods p ON i.payment_id = p.payment_id
       INNER JOIN users u ON i.user_id = u.user_id 
-      WHERE i.noinvoice = '$number'";
+      WHERE i.invoice_id = '$id'";
 
       return $db->query($query);
    }

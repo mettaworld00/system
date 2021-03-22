@@ -4,9 +4,9 @@ require_once './models/transaction.php';
 
 class TransactionController 
 {
-    public function in()
+    public function view()
     {
-          $number = $_POST['number'];
-        require_once './views/transaction/in.php';
+        $symbol = "DOP";
+        require_once './views/transactions/view.php';
     }
 }
