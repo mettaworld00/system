@@ -254,6 +254,7 @@ if ($_POST['action'] == 'procesarVenta') {
   $db = Database::connect();
 
   $status = 4; // 3 = Pagada
+  $warehouseID = $_SESSION['identity']->warehouse_id;
   $customer_id = $_POST['customer_id'];
   $user_id = $_POST['user_id'];
   $payment_method = $_POST['payment_method'];
@@ -262,7 +263,7 @@ if ($_POST['action'] == 'procesarVenta') {
   $created_at = $_POST['created_at'];
   $expiration = $_POST['expiration'];
 
-  $query = "INSERT INTO invoices VALUES (null,'$noInvoice','$payment_method',$status,'$customer_id','$user_id','$total_invoice','$total_invoice',null,'$expiration','$created_at')";
+  $query = "INSERT INTO invoices VALUES (null,'$noInvoice','$warehouseID','$payment_method',$status,'$customer_id','$user_id','$total_invoice','$total_invoice',null,'$expiration','$created_at')";
 
   if ($db->query($query) === TRUE) {
 

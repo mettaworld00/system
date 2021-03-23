@@ -1,6 +1,7 @@
 <?php $invoice = Help::showTransactionIN($_GET['id']);
 while ($element = $invoice->fetch_object()) : ?>
 
+<?php if($element->pending > 0) { ?>
 
     <div class="section-wrapper">
         <div class="align-content clearfix">
@@ -11,16 +12,15 @@ while ($element = $invoice->fetch_object()) : ?>
         </div>
     </div>
 
-
+<form action="" onsubmit="event.preventDefault(); Addpayment();">
     <div class="generalContainer">
 
         <div class="container">
             <div class="row">
 
                 <!-- Hiddens -->
-                <input type="hidden" name="user_id" value="<?= $element->user_id ?>" id="user_id">
-                <input type="hidden" name="" value="" id="customer_id">
-                <input type="hidden" name="name" value="" id="customer">
+                <input type="hidden" name="" value="<?= $element->customer_id ?>" id="debtor_id">
+                <input type="hidden" name="" value="<?= $element->invoice_id ?>" id="invoice_id">
 
                 <div class="form-group col-md-6">
                     <div class="form-group row">
@@ -29,21 +29,6 @@ while ($element = $invoice->fetch_object()) : ?>
                             <input class="form-custom col-sm-10" type="text" value="<?= $element->customer_name ?>" name="" id="" disabled>
                         </div>
                     </div>
-
-                    <div class="form-group row">
-                        <label for="" class="col-sm-2 text-right ">Número</label>
-                        <div class="col-sm-7">
-                        <input class="form-custom col-sm-10" type="text" value="<?= $element->invoice_id ?>" name="" id="" disabled>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="" class="col-sm-2 text-right ">RNC</label>
-                        <div class="col-sm-7">
-                        <input class="form-custom col-sm-10" type="text" value="<?= $element->rnc ?>" name="" id="" disabled>
-                        </div>
-                    </div>
-
                     
                     <div class="form-group row">
                         <label for="" class="col-sm-2 text-right">Fecha</label>
@@ -64,7 +49,14 @@ while ($element = $invoice->fetch_object()) : ?>
                     <div class="form-group row">
                         <label for="" class="col-sm-2 text-right">Pago</label>
                         <div class="col-sm-7">
-                        <input type="text" name="" class="form-custom col-sm-10" value="" id="">
+                            <select class="form-custom  col-sm-10" name="" id="payment_method" required>
+
+                            <?php $payments = Help::showPayments_methods();
+                            while ($payment = $payments->fetch_object()) : ?>
+                                <option value="<?= $payment->payment_method_id ?>"><?= $payment->payment_name ?></option>
+                            <?php endwhile; ?>
+
+                            </select>
                         </div>
                     </div>
                     
@@ -77,7 +69,7 @@ while ($element = $invoice->fetch_object()) : ?>
                     <div class="form-group row">
                         <label for="" class="col-sm-3 text-right">Nota</label>
                         <div class="col-sm-7">
-                        <textarea class="form-custom col-sm-10" name="" id="" cols="32" rows="5"></textarea>
+                        <textarea class="form-custom col-sm-10" name="" id="payment_note" cols="32" rows="5"></textarea>
                         </div>
                     </div>
 
@@ -109,7 +101,7 @@ while ($element = $invoice->fetch_object()) : ?>
                         <td> <input class="invisible-input" type="text" value="<?= $symbol.' '.number_format($element->total_invoice,2) ?>" id="" disabled> </td>
                         <td> <input class="invisible-input text-success" type="text" value="<?= $symbol.' '.number_format($element->money_received,2) ?>" id="" disabled> </td>
                         <td> <input class="invisible-input text-danger" type="text" value="<?= $symbol.' '.number_format($element->pending,2) ?>" id="" disabled> </td>
-                        <td><input class="no-border" type="number" name="" id=""></td>
+                        <td><input class="no-border" type="number" name="" id="received_value" required></td>
                     </tr>
              
             </tbody>
@@ -122,6 +114,8 @@ while ($element = $invoice->fetch_object()) : ?>
         </div>
     </div>
 
-    
+</form>
+
+<?php } ?>
 
 <?php endwhile; ?>

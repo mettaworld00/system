@@ -194,7 +194,7 @@ class Help
       FROM invoices i 
       INNER JOIN customers c ON i.customer_id = c.customer_id
       INNER JOIN status s ON i.status_id = s.status_id 
-      INNER JOIN payment_methods p ON i.payment_id = p.payment_id
+      INNER JOIN payment_methods p ON i.payment_method_id = p.payment_method_id
       INNER JOIN users u ON i.user_id = u.user_id 
       WHERE i.invoice_id = '$id'";
 
@@ -246,7 +246,7 @@ class Help
       FROM service_invoices si 
       INNER JOIN customers c ON si.customer_id = c.customer_id
       INNER JOIN status s ON si.status_id = s.status_id 
-      INNER JOIN payment_methods p ON si.payment_id = p.payment_id
+      INNER JOIN payment_methods p ON si.payment_method_id = p.payment_method_id
       INNER JOIN users u ON si.user_id = u.user_id 
       WHERE si.service_invoice_id = '$id'";
 
@@ -282,12 +282,12 @@ class Help
       $db = Database::connect();
 
       $query = "SELECT 
-      i.invoice_id, i.noinvoice, i.total_invoice, i.money_received, i.pending, i.expiration, i.created_at as 'date',
-      c.customer_name, c.rnc, c.telephone1, s.status_name, p.payment_name, u.user_id, u.username, u.name
+      i.invoice_id, i.noinvoice, i.warehouse_id, i.total_invoice, i.money_received, i.pending, i.expiration, i.created_at as 'date',
+      c.customer_name, c.customer_id, c.rnc, c.telephone1, s.status_name, p.payment_name, u.user_id, u.username, u.name
       FROM invoices i 
       INNER JOIN customers c ON i.customer_id = c.customer_id
       INNER JOIN status s ON i.status_id = s.status_id 
-      INNER JOIN payment_methods p ON i.payment_id = p.payment_id
+      INNER JOIN payment_methods p ON i.payment_method_id = p.payment_method_id
       INNER JOIN users u ON i.user_id = u.user_id 
       WHERE i.invoice_id = '$id'";
 

@@ -50,7 +50,7 @@
 
                         <a class="action-paid <?php if ($element->status_name != 'Por cobrar'): ?> action-disable  <?php endif; ?>" 
                              href="<?php if ($element->status_name == 'Por cobrar') { 
-                                    echo base_url.'transaction/view&id='.$element->invoice_id; 
+                                    echo base_url.'payments/view&id='.$element->invoice_id; 
                                     } else { echo '#'; } ?> "> 
                              <i class="fas fa-hand-holding-usd"></i>
                         </a>

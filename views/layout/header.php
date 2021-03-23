@@ -26,6 +26,7 @@
   <script src="<?= base_url ?>/public/functions/services.js" text="text/javascript"></script>
   <script src="<?= base_url ?>/public/functions/contacts.js" text="text/javascript"></script>
   <script src="<?= base_url ?>/public/functions/price_list.js" text="text/javascript"></script>
+  <script src="<?= base_url ?>/public/functions/payments.js" text="text/javascript"></script>
   <script src="<?= base_url ?>/public/functions/categories.js" text="text/javascript"></script>
   <script src="<?= base_url ?>/public/functions/taxes.js" text="text/javascript"></script>
   <script src="<?= base_url ?>/public/functions/inventory_control.js" text="text/javascript"></script>
@@ -128,7 +129,7 @@
               <ul class="submenu ">
                 <li class="page"><a href="<?= base_url ?>invoices/index">Factura de venta</a> <a href="<?= base_url ?>invoices/addpurchase"><i class="fas fa-plus-circle"></i></a></li>
                 <li class="page"><a href="<?= base_url ?>services/invoices">Factura de servicio</a> <a href="<?= base_url ?>services/addpurchase"><i class="fas fa-plus-circle"></i></a></li>
-                <li class="page"><a href="<?= base_url ?>">Pagos recibidos</a></li>
+                <li><a href="<?= base_url ?>payments/index">Pagos recibidos</a> </li>
 
               </ul>
             </li>

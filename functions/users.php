@@ -56,41 +56,6 @@ if ($_POST['action'] == "login") {
 
 
 
-function login()
-{
-    $result = false;
-
-    $username = $this->usuario;
-    $password = $this->password;
-
-    $query = "SELECT *FROM usuarios WHERE usuario = '$username'";
-    $login = $this->db->query($query);
-
-    if ($login && $login->num_rows == 1) {
-        $usuario = $login->fetch_object();
-
-        $verify = password_verify($password, $usuario->password);
-        $verify2 = $password;   // verificar contraseña normal 
-
-        if ($verify) {
-
-            $result = $usuario;
-            header("Location: " . base_url);
-        } else  if ($verify2 == $usuario->password) {
-
-            $result = $usuario;
-            header("Location: " . base_url);
-        } else {
-            $result = false;
-        }
-        
-    } else {
-        $result = false;
-    }
-
-    return $result;
-}
-
 
 
 // if ($db->query($query) === TRUE) {
