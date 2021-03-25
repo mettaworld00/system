@@ -54,7 +54,12 @@ if ($_POST['action'] == 'agregarPago') {
 
                     if ($db->query($query) === TRUE) {
 
-                        echo 1;
+                       if($pending > 0) {
+                           echo "pendiente";
+                       } else if ($pending == 0) {
+                           echo "pagada";
+                       }
+
                     } else {
                         echo "Error: " . $db->error;
                     }

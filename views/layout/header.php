@@ -202,11 +202,11 @@
           </ul>
 
           <input class="form-search" type="search" name="" value="Buscar" id="">
-        </div> -->
+        </div>
 
         </div>
 
-        <!-- <div class="admin">
+        <div class="admin">
         <strong> Admin | </strong>
         <a>Cerrar sesion</a>
       </div> -->

@@ -9,26 +9,35 @@ require_once 'views/layout/header.php';
 
 
 
-if(isset($_GET['controller'])){
-	$nombre_controlador = $_GET['controller'].'Controller';
-
-}elseif(!isset($_GET['controller']) && !isset($_GET['action'])){
-	$nombre_controlador = controller_default;
-	
+if (isset($_GET['controller']) && isset($_GET['action'])) {
+    
+    $CONTROLLER_NAME = $_GET['controller'] . 'Controller';
+    
+} else if (!isset($_GET['controller']) || !isset($_GET['action'])) {
+    $CONTROLLER_NAME = DEFAULT_CONTROLLER;
 }
 
-if(class_exists($nombre_controlador)){	
-	$controlador = new $nombre_controlador();
-	
-	if(isset($_GET['action']) && method_exists($controlador, $_GET['action'])){
-		$action = $_GET['action'];
-		$controlador->$action();
-	}elseif(!isset($_GET['controller']) && !isset($_GET['action'])){
-		$action_default = action_default;
-		$controlador->$action_default();
-	}
-}
+if (class_exists($CONTROLLER_NAME)) {
+
+    $CLASSNAME = new $CONTROLLER_NAME();
+
+    if (isset($_GET['action']) && method_exists($CLASSNAME, $_GET['action'])) {
+
+        $ACTION = $_GET['action'];
+        $CLASSNAME->$ACTION();
+
+    } else if (!method_exists($CLASSNAME, $_GET['action'])) {
+
+        $DEFAULT_CONTROLLER = DEFAULT_CONTROLLER;
+		$DEFAULT_ACTION = DEFAULT_ACTION;
+
+        $CLASSNAME = new $DEFAULT_CONTROLLER();
+        
+        $CLASSNAME->$DEFAULT_ACTION();
+    }
+} 
+
+
+
 
 require_once 'views/layout/footer.php';
-
-

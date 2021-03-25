@@ -9,4 +9,9 @@ class HomeController
 
         require_once './views/layout/home.php';
     }
+
+    public function error()
+    {
+        echo "no existe";
+    }
 }

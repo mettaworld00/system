@@ -10,7 +10,7 @@ $(document).ready(function () {
 
 function Addpayment() {
 
-    alertify.confirm("Agregar pago", "¿Está seguro de que desea agregar un pago a esta factura ? ",
+    alertify.confirm("Agregar pago", "¿Está seguro de que desea agregar un pago a esta factura? ",
         function () {
 
             $.ajax({
@@ -29,8 +29,16 @@ function Addpayment() {
                     $('.loader').show();
                 },
                 success: function (res) {
-                    console.log(res);
+
                     $('.loader').hide();
+                    
+                    if (res == 'pagada') {
+                        window.location.href = SITE_URL+"invoices/index";
+                    } else if (res == 'pendiente'){
+                        $('#form-payment').load(location.href + " #form-payment");
+                    }
+                   
+                  
                 }
             });
 

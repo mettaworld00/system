@@ -1,7 +1,7 @@
 <?php
 define("base_url", "http://localhost/sistem/");
-define("controller_default", "clientController");
-define("action_default", "index");
+define("DEFAULT_CONTROLLER", "homeController");
+define("DEFAULT_ACTION", "error");
 
 
 

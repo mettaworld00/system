@@ -327,6 +327,7 @@ customer_id int NOT NULL,
 invoice_id int NOT NULL,
 payment_method_id int NOT NULL,
 warehouse_id int NOT NULL,
+received decimal(19,2) NOT NULL,
 note varchar(150) NULL,
 created_at date NOT NULL,
 
