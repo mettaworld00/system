@@ -319,6 +319,8 @@ $(document).ready(function () {
     $('#AgregarItem').on('click', (e) => {
         e.preventDefault();
 
+        $('#AgregarItem').hide();
+
         var product_id = $('#product_id').val();
         var total_price = $('#total_price').val().replace(/,/g, "");
         var quantity = $('#quantity').val();
@@ -524,7 +526,9 @@ $(document).ready(function () {
                     success: function (res) {
 
                         console.log(res);
+                        
                         reload();
+                        $('.totalContainer').hide();
                         $('.loader').hide();
                     }
 
@@ -645,6 +649,7 @@ $(document).ready(function () {
                         success: function (res) {
 
                             $('#Detalle').load(location.href + " #Detalle");
+                            $('.totalContainer').hide();
                             $('.loader').hide()
                            
 
@@ -664,6 +669,8 @@ $(document).ready(function () {
 
     $('#addPurchase').on('click', (e) => {
         e.preventDefault();
+
+        $('#addPurchase').hide();
 
         addItemToDetail();
     })
@@ -737,6 +744,8 @@ const format = new Intl.NumberFormat('en-CA', {
 });
 
 function invoiceTotal() {
+
+    $('.totalContainer').show();
 
     $.ajax({
         type: "post",
