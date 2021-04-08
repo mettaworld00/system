@@ -44,9 +44,9 @@
                     <td><?= $symbol." ".number_format($product->price_out) ?></td>
                     <td>
 
-                        <a href="<?=base_url?>product/view&id=<?=$product->product_id?>">
+                        <!-- <a href="<?=base_url?>product/view&id=<?=$product->product_id?>">
                         <span class="action-view"><i class="fas fa-eye"></i></span>
-                        </a>
+                        </a> -->
 
                         <a  class="action-edit <?php if ($product->status_name != 'Activo') { ?> action-disable <?php } ?> " 
                                  href="<?php if ($product->status_name == 'Activo') { 

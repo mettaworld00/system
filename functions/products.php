@@ -1,7 +1,7 @@
 <?php
 
 require_once '../config/db.php';
-
+session_start();
 
 //  Eliminar producto
 
@@ -17,6 +17,31 @@ if ($_POST['action'] == "eliminarProducto") {
   } else {
 
     echo "Error: " . $db->error;
+  }
+}
+
+/**
+ * Verificar codigo del producto
+ -----------------------------------------*/
+
+ if ($_POST['action'] == "verificar-codigo") {
+
+  $warehouseID = $_SESSION['identity']->warehouse_id;
+  $code = $_POST['product_code'];
+
+  $db = Database::connect();
+
+  $query = "SELECT product_code FROM products WHERE product_code = '$code'";
+
+  if ($db->query($query) === TRUE) {
+
+    echo 'aprovado';
+
+  } else {
+
+    echo 'no disponible';
+
+    // echo "Error: " . $db->error;
   }
 }
 
@@ -47,40 +72,53 @@ if ($_POST['action'] == "agregarProducto") {
   $category_id = $_POST['category'];
   $warehouse_id = $_POST['warehouse'];
 
-  $query = "INSERT INTO products VALUES (null,'$userID','$warehouse_id','$unit_id',$statusID,'$product_code','$name','$price_in','$price_out','$quantity','$min_quantity','$expiration',CURDATE())";
+  $query1 = "SELECT product_code FROM products WHERE product_code = '$product_code'";
+  $verify = $db->query($query1);
 
-  if ($db->query($query) === TRUE) {
+    // Verificar código de producto
 
-    $LAST_ID = $db->insert_id;
-    echo $LAST_ID;
+    if ($verify->num_rows == 0) {
 
-    function insertIntoDB($query)
-    {
-
-      $db = Database::connect();
+      $query = "INSERT INTO products VALUES (null,'$userID','$warehouse_id','$unit_id',$statusID,'$product_code',
+      '$name','$price_in','$price_out','$quantity','$min_quantity','$expiration',CURDATE())";
 
       if ($db->query($query) === TRUE) {
+
+        $LAST_ID = $db->insert_id;
+
+        // Proceso
+
+        function insertIntoDB($query)
+        {
+
+          $db = Database::connect();
+
+          if ($db->query($query) === TRUE) {
+          } else {
+
+            echo "Error: " . $db->error;
+          }
+
+        }
+
+        if ($_POST['tax'] != "") {
+          $query = "INSERT INTO products_taxes VALUES ($LAST_ID,'$tax_id');";
+          insertIntoDB($query);
+        }
+
+        if ($_POST['category'] != "") {
+          $query = "INSERT INTO products_categories VALUES ($LAST_ID,'$category_id');";
+          insertIntoDB($query);
+        }
+
       } else {
 
         echo "Error: " . $db->error;
-      }
+      } 
+
+    } else {
+       echo "match";
     }
-
-
-    if ($_POST['tax'] != "") {
-      $query = "INSERT INTO products_taxes VALUES ($LAST_ID,'$tax_id');";
-      insertIntoDB($query);
-    }
-
-    if ($_POST['category'] != "") {
-      $query = "INSERT INTO products_categories VALUES ($LAST_ID,'$category_id');";
-      insertIntoDB($query);
-    }
-
-  } else {
-
-    echo "Error: " . $db->error;
-  }
 }
 
 
@@ -105,9 +143,16 @@ if ($_POST['action'] == 'agregarPreciosAlProducto') {
  * Actualizar producto
  -------------------------------------*/
 
-if ($_POST['action'] == "actualizarProducto") {
+if ($_POST['action'] == "actualizar-producto") {
 
-  $userID = 1;
+  $db = Database::connect();
+
+  $getStatus = "SELECT * FROM status WHERE status_name = 'Activo'";
+  $datos = $db->query($getStatus);
+
+  $element = $datos->fetch_object();
+
+  $status_id = $element->status_id; // Activo
   $product_id = $_POST['product_id'];
   $product_code = $_POST['product_code'];
   $name = $_POST['name'];
@@ -119,26 +164,41 @@ if ($_POST['action'] == "actualizarProducto") {
   $unit_id = $_POST['unit'];
   $category_id = $_POST['category'];
   $warehouse_id = $_POST['warehouse'];
-  $status_id = 1; // activo
 
-  $db = Database::connect();
 
-  $query = "UPDATE products SET 
-  user_id = $userID, status_id = '$status_id', product_code = '$product_code',
-  product_name = '$name', price_in = '$price_in',
-  price_out = '$price_out', quantity = '$quantity',
-  inventary_min = '$min_quantity' WHERE product_id = '$product_id';";
+    $query1 = "SELECT product_code FROM products WHERE product_code = '$product_code'";
+    $query2 = "SELECT product_code FROM products WHERE product_id = '$product_id'";
 
-  $query .= "UPDATE products_categories SET category_id = '$category_id' WHERE product_id = '$product_id';";
-  $query .= "UPDATE products_taxes SET tax_id = '$tax_id' WHERE product_id = '$product_id';";
-  $query .= "UPDATE products_warehouses SET warehouse_id = '$warehouse_id' WHERE product_id = '$product_id';";
+    $verify = $db->query($query1);
+    $data = $db->query($query2);
 
-  if ($db->multi_query($query) === TRUE) {
-    echo 1;
-  } else {
+    $result = $data->fetch_object();
+    $old_code = $result->product_code;
 
-    echo "Error: " . $db->error;
-  }
+     // Verificar código de producto
+
+    if ($verify->num_rows == 0 || $old_code == $product_code) {
+
+      $query = "UPDATE products SET 
+      status_id = '$status_id', product_code = '$product_code',
+      product_name = '$name', price_in = '$price_in',
+      price_out = '$price_out', quantity = '$quantity',
+      inventary_min = '$min_quantity' WHERE product_id = '$product_id';";
+
+      $query .= "UPDATE products_categories SET category_id = '$category_id' WHERE product_id = '$product_id';";
+      $query .= "UPDATE products_taxes SET tax_id = '$tax_id' WHERE product_id = '$product_id';";
+      $query .= "UPDATE products_warehouses SET warehouse_id = '$warehouse_id' WHERE product_id = '$product_id';";
+
+      if ($db->multi_query($query) === TRUE) {
+        echo 'ready';
+      } else {
+
+        echo "Error: " . $db->error;
+      }
+    } else {
+      echo "match";
+    }
+    
 }
 
 

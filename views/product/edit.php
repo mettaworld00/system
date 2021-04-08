@@ -1,16 +1,17 @@
 <?php $product = Help::showProductId($_GET['id']); while($element = $product->fetch_object()): ?>
 
+
+
     <div class="section-wrapper">
     <div class="align-content clearfix">
-        <h1><i class="fas fa-box"></i> <?= $element->product_name ?></h1>
+        <h1><i class="far fa-edit"></i> Editar ítem</h1>
     </div>
 </div>
 
 
     <div class="generalContainer">
+    <form action="" onsubmit="event.preventDefault(); updateProduct('<?= $element->product_id ?>');">
         <div class="row col-md-12">
- 
-        <input type="hidden" name="" value="<?= $element->product_id?>" id="productId">
 
             <div class="form-group col-md-3 border-right">
                 <div class="form-group mb-3">
@@ -20,7 +21,7 @@
 
                 <label class="form-check-label" for="">Precio<span class="text-danger">*</span> </label>
                 <div class="form-group mb-3">
-                    <input type="number" name="price_out" class="form-custom col-sm-12" value="<?=  $element->price_out ?>" placeholder="" id="inputPrice_out" required>
+                    <input type="number" name="price_out" class="form-custom col-sm-12" value="<?= $element->price_out ?>" placeholder="" id="inputPrice_out" required>
 
                 </div>
 
@@ -37,7 +38,7 @@
                 <div class="form-group mb-3">
                     <label class="form-check-label" for="">Categorías <a href="#" class="example-popover" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?"><i class="far fa-question-circle"></i></a></label>
                     <select class="form-custom search col-sm-12" name="category" id="category">
-                        <option value="">Nínguno</option>
+            
                         <option value="<?= $element->category_id ?>" selected><?= $element->category_name ?></option>
                         <?php $categories = Help::showCategories();
                         while ($category = $categories->fetch_object()) : ?>
@@ -120,16 +121,17 @@
             </div>
         </div>
 
-
-    </div> <!-- GeneralContainer -->
-
-    <div class="buttons clearfix">
+        <div class="buttons clearfix">
         <div class="floatButtons">
             <a class="btn btn-danger" href="<?= base_url ?>product/index">Cancelar</a>
-            <!-- <input class="btn btn-secondary " type="button" value="Guardar y crear nueva" id="createNewProduct"> -->
-            <input class="btn btn-primary " type="button" value="Guardar" id="updateProduct">
+            <input class="btn btn-primary " type="submit" value="Guardar">
         </div>
     </div>
+
+    </form>
+    </div> <!-- GeneralContainer -->
+
+
 
     <?php endwhile; ?>
 

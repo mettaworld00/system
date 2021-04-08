@@ -1,6 +1,7 @@
 <?php
 
 require_once '../config/db.php';
+session_start();
 
 /**
  * Generar No. Servicio
@@ -69,9 +70,10 @@ if ($_POST['action'] == "agregarServicio") {
 
 if ($_POST['action'] == "procesarVenta") {
 
-  $status = 3; // 3 = Pagado
+  $status = 4; // 4 = Pagado
   $customer_id = $_POST['customer_id'];
-  $user_id = $_POST['user_id'];
+  $warehouseID = $_SESSION['identity']->warehouse_id;
+  $user_id = $_SESSION['identity']->user_id;
   $payment_method = $_POST['payment_method'];
   $total_invoice = $_POST['purchase'];
   $noInvoice = $_POST['noinvoice'];
@@ -80,7 +82,7 @@ if ($_POST['action'] == "procesarVenta") {
 
   $db = Database::connect();
 
-  $query = "INSERT INTO service_invoices VALUES (null,'$noInvoice','$payment_method',$status,'$customer_id',
+  $query = "INSERT INTO service_invoices VALUES (null,'$noInvoice','$warehouseID','$payment_method',$status,'$customer_id',
     '$user_id','$total_invoice','$total_invoice',null,'$expiration','$created_at')";
 
   if ($db->query($query) === TRUE) {

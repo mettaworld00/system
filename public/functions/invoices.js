@@ -16,28 +16,6 @@ $(document).ready(function () {
 
     reload();
 
-    function reload() {
-
-        $('#Detalle').load(location.href + " #Detalle");
-
-        //  Generar No. factura
-
-        $.ajax({
-            type: "post",
-            url: SITE_URL + "functions/invoices.php",
-            data: {
-                action: "generarNoFactura"
-            },
-            success: function (res) {
-                var pref = 'ch0';
-                $('#nofactura').val(pref + res);
-
-                $('#noFactura').load(location.href + " #noFactura");
-                localStorage.setItem('Nofactura', pref + res);
-            }
-        });
-    }
-
 
     /**
      * Buscar clientes
@@ -356,6 +334,7 @@ $(document).ready(function () {
                 $('#total_price').val('0.00');
                 $('#stock').val('0');
                 $('#quantity').val('0');
+                $('#tax_value').val('0');
                 $('#barcode').val('');
                 $('#description').val('-');
                 $('#quantity').attr("disabled", true);
@@ -451,12 +430,12 @@ $(document).ready(function () {
         AddSale();
     });
 
-    $('#printInvoice').on('click', (e) => {
-        e.preventDefault();
+    // $('#printInvoice').on('click', (e) => {
+    //     e.preventDefault();
 
-        AddSaleAndPrint();
+    //     AddSaleAndPrint();
 
-    })
+    // })
 
 
     function AddSale() {
@@ -542,77 +521,77 @@ $(document).ready(function () {
     } // End function AddSale
 
 
-    function AddSaleAndPrint() {
+    // function AddSaleAndPrint() {
 
-        if ($('#rows tr').length > 0) {
-            if ($('#customer_id').val() < 1) {
-                unknownCustomer();
-            } else {
-                CreateInvoice();
-            }
-        }
+    //     if ($('#rows tr').length > 0) {
+    //         if ($('#customer_id').val() < 1) {
+    //             unknownCustomer();
+    //         } else {
+    //             CreateInvoice();
+    //         }
+    //     }
 
-        // Crear cliente desconocido
+    //     // Crear cliente desconocido
 
-        function unknownCustomer() {
+    //     function unknownCustomer() {
 
-            $.ajax({
-                type: "post",
-                url: SITE_URL + "functions/contacts.php",
-                data: {
-                    action: 'CrearClienteDesconocido'
-                },
-                success: function (res) {
-                    CreateInvoice(res);
-                }
-            });
-        }
+    //         $.ajax({
+    //             type: "post",
+    //             url: SITE_URL + "functions/contacts.php",
+    //             data: {
+    //                 action: 'CrearClienteDesconocido'
+    //             },
+    //             success: function (res) {
+    //                 CreateInvoice(res);
+    //             }
+    //         });
+    //     }
 
-        // Crear factura
+    //     // Crear factura
 
-        function CreateInvoice(contact_id) {
+    //     function CreateInvoice(contact_id) {
 
-            // Verificar contact_id
+    //         // Verificar contact_id
 
-            let customer_id;
+    //         let customer_id;
 
-            if (contact_id > 0) {
-                customer_id = contact_id;
-            } else {
-                customer_id = $('#customer_id').val();
-            }
-
-
-            $.ajax({
-                type: "post",
-                url: SITE_URL + "functions/invoices.php",
-                data: {
-                    action: "procesarVenta",
-                    customer_id: customer_id,
-                    user_id: $('#user_id').val(),
-                    payment_method: $('#payment_method').val(),
-                    purchase: $('#purchase').val(),
-                    noinvoice: $('#nofactura').val(),
-                    created_at: $('#date').val(),
-                    expiration: $('#invoice_expiration').val()
+    //         if (contact_id > 0) {
+    //             customer_id = contact_id;
+    //         } else {
+    //             customer_id = $('#customer_id').val();
+    //         }
 
 
-                },
-                success: function (res) {
+    //         $.ajax({
+    //             type: "post",
+    //             url: SITE_URL + "functions/invoices.php",
+    //             data: {
+    //                 action: "procesarVenta",
+    //                 customer_id: customer_id,
+    //                 user_id: $('#user_id').val(),
+    //                 payment_method: $('#payment_method').val(),
+    //                 purchase: $('#purchase').val(),
+    //                 noinvoice: $('#nofactura').val(),
+    //                 created_at: $('#date').val(),
+    //                 expiration: $('#invoice_expiration').val()
 
-                    console.log(res)
 
-                    // $('#billingCustomer').load(location.href + " #billingCustomer");
-                    // $('#Detalle').load(location.href + " #Detalle");
-                    // $('.totalContainer').load(location.href + " .totalContainer");
+    //             },
+    //             success: function (res) {
+
+    //                 console.log(res)
+
+    //                 // $('#billingCustomer').load(location.href + " #billingCustomer");
+    //                 // $('#Detalle').load(location.href + " #Detalle");
+    //                 // $('.totalContainer').load(location.href + " .totalContainer");
 
 
-                },
-                complete: () => console.log('complete')
+    //             },
+    //             complete: () => console.log('complete')
 
-            });
-        }
-    } // End Function AddSaleAndPrint 
+    //         });
+    //     }
+    // } // End Function AddSaleAndPrint 
 
 
 
@@ -714,6 +693,7 @@ $(document).ready(function () {
                 $('#price_out').val('0.00');
                 $('#total_price').val('0.00');
                 $('#stock').val('0');
+                $('#tax_value').val('0');
                 $('#quantity').val('0');
                 $('#barcode').val('');
                 $('#description').val('-');
@@ -742,6 +722,30 @@ const format = new Intl.NumberFormat('en-CA', {
     style: 'currency',
     currency: 'DOP'
 });
+
+
+function reload() {
+
+    $('#Detalle').load(location.href + " #Detalle");
+
+    //  Generar No. factura
+
+    $.ajax({
+        type: "post",
+        url: SITE_URL + "functions/invoices.php",
+        data: {
+            action: "generarNoFactura"
+        },
+        success: function (res) {
+            var pref = 'ch0';
+            $('#nofactura').val(pref + res);
+
+            $('#noFactura').load(location.href + " #noFactura");
+            localStorage.setItem('Nofactura', pref + res);
+        }
+    });
+}
+
 
 function invoiceTotal() {
 
@@ -1000,14 +1004,6 @@ function disabledInvoice(invoice_id) {
 }
 
 
-
-
-
-
-
-
-
-
 // Actualizar factura a credito
 
 function showCreditData(invoice_id) {
@@ -1032,4 +1028,97 @@ function showCreditData(invoice_id) {
             }
         }
     });
+}
+
+
+// Agregar factura a crédito
+
+function Add_sale_credit() {
+
+    if ($('#rows tr').length > 0) {
+        if ($('#customer_id').val() < 1) {
+            unknownCustomer();
+        } else {
+            CreateInvoice();
+        }
+    }
+
+    // Crear cliente desconocido
+
+    function unknownCustomer() {
+
+        $.ajax({
+            type: "post",
+            url: SITE_URL + "functions/contacts.php",
+            data: {
+                action: 'CrearClienteDesconocido'
+            },
+            success: function (res) {
+                CreateInvoice(res);
+            }
+        });
+    }
+
+    // Crear factura
+
+    function CreateInvoice(contact_id) {
+
+        // Verificar contact_id
+
+        let customer_id;
+
+        if (contact_id > 0) {
+            customer_id = contact_id;
+        } else {
+            customer_id = $('#customer_id').val();
+        }
+
+        let Nofactura;
+
+        if (localStorage.getItem('Nofactura') != null) {
+
+            Nofactura = localStorage.getItem('Nofactura');
+
+            $.ajax({
+                type: "post",
+                url: SITE_URL + "functions/invoices.php",
+                data: {
+                    action: "procesar-venta-a-credito",
+                    customer_id: customer_id,
+                    received: $('#received').val(),
+                    payment_method: $('#payment_method').val(),
+                    purchase: $('#purchase').val(),
+                    noinvoice: Nofactura,
+                    created_at: $('#date').val(),
+                    expiration: $('#invoice_expiration').val()
+
+
+                },
+                beforeSend: function () {
+                    $('.loader').show();
+                },
+                success: function (res) {
+
+                    console.log(res);
+
+                    if (res > 0) {
+                        reload();
+                        $('.totalContainer').hide();
+                    } else {
+                        console.log('El valor introducido es identico o mayor al de la factura a credito')                    
+                    }
+                   
+                    $('#modal-invoice-credit').css('display','none');
+                    $('.modal-backdrop').removeClass('show');      
+                    $('.modal-backdrop').removeClass('modal-backdrop');      
+                    $('.loader').hide();
+                }
+
+            });
+
+        } else {
+            console.log("No se ha encontrado la factura");
+        }
+    }
+
 }

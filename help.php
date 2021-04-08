@@ -92,16 +92,16 @@ class Help
       p.quantity, p.inventary_min, p.expiration, p.created_at, c.category_id, 
       c.category_name, d.discount_id, d.discount_name, d.discount_value, t.tax_id, t.tax_name, 
       t.tax_value, w.warehouse_id, w.warehouse_name, u.unit_id, u.unit_name FROM products p 
+            LEFT JOIN warehouses w ON p.warehouse_id = w.warehouse_id
             LEFT JOIN products_categories pc ON p.product_id = pc.product_id
             LEFT JOIN categories c ON pc.category_id = c.category_id
             LEFT JOIN products_discounts pd ON p.product_id = pd.product_id
             LEFT JOIN discounts d ON pd.discount_id = d.discount_id
             LEFT JOIN products_taxes pt ON p.product_id = pt.product_id
             LEFT JOIN taxes t ON pt.tax_id = t.tax_id
-            LEFT JOIN products_warehouses pw ON p.product_id = pw.product_id
-            LEFT JOIN warehouses w ON pw.warehouse_id = w.warehouse_id
             LEFT JOIN units u ON p.unit_id = u.unit_id
             WHERE p.product_id = '$product_id'";
+
 
       $db = Database::connect();
       return $db->query($query);
@@ -129,6 +129,17 @@ class Help
    {
 
       $query = "SELECT *FROM price_lists";
+
+      $db = Database::connect();
+      return $db->query($query);
+   }
+
+   // Función para mostrar lista de precios por ID
+
+   public static function showPrice_listID($id)
+   {
+
+      $query = "SELECT *FROM price_lists WHERE list_id = '$id'";
 
       $db = Database::connect();
       return $db->query($query);

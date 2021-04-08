@@ -222,7 +222,7 @@
 
             <form action="<?= base_url ?>transaction/in" method="post" onsubmit="credit()">
             <input type="hidden" name="number" id="transactionNumber" disabled>
-                <button class="btn btn-outline-dark ml-2" type="submit" id="addcredit">Guardar a crédito</button>
+                <button class="btn btn-outline-dark ml-2" data-toggle="modal" data-target="#modal-invoice-credit" type="button" id="">Guardar a crédito</button>
             </form>
 
             <button class="btn btn-outline-dark ml-2" type="button" id="printInvoice">Guardar e imprimir</button>
@@ -237,7 +237,7 @@
 
 
 
-<!-- Modal -->
+<!-- Modal add customer -->
 <div class="modal fade" id="modalCustomer" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg">
         <div class="modal-content">
@@ -281,6 +281,44 @@
                             </div>
 
                         </div>
+                    </div> <!-- Row col-md-12 -->
+
+                    <div class="mt-1 modal-footer">
+                        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-sm btn-primary" id="ad">Guardar</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Factura a crédito -->
+<div class="modal fade" id="modal-invoice-credit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Guardar a crédito</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" onsubmit="event.preventDefault(); Add_sale_credit();">
+                    <div class="row col-md-12">
+
+                        <div class="form-group col-md-12">
+                            <div class="form-group">
+                                <label for="">Valor recibido<span class="text-danger">*</span></label>
+                                <input class="form-control form-control-sm" type="number" name="" value="0" id="received" required>
+                            </div>
+
+                        </div>
+
                     </div> <!-- Row col-md-12 -->
 
                     <div class="mt-1 modal-footer">
