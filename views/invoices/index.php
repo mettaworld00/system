@@ -55,9 +55,9 @@
                              <i class="fas fa-hand-holding-usd"></i>
                         </a>
 
-                        <a href="<?= base_url ?>product/view&id=<?= $element->invoice_id ?>">
+                        <!-- <a href="<?= base_url ?>product/view&id=<?= $element->invoice_id ?>">
                             <span class="action-view"><i class="fas fa-eye"></i></span>
-                        </a>
+                        </a> -->
 
                         <a  class="action-edit <?php if ($element->status_name == 'Pagada' || $element->status_name == 'Anulada') { ?> action-disable <?php } ?> " 
                                  href="<?php if ($element->status_name == 'Por cobrar') { 

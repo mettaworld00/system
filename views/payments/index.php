@@ -36,10 +36,12 @@
                     <td><?= $element->noinvoice ?></td>
                     <td><?= number_format($element->received, 2) ?></td>
                     <td><?= $element->payment_name ?></td>
-                    <td><?= $element->note ?></td>
+                    <td class="note-width"><?= $element->note ?></td>
                     <td><?= $element->created_at ?></td>
                     <td>
-                    <span onclick="deleteInvoice('<?= $element->invoice_id ?>')" class="action-delete"><i class="fas fa-trash-alt"></i></span>
+                        <span onclick="deleteInvoice('<?= $element->invoice_id ?>')" class="action-delete">
+                        <i class="fas fa-times"></i>
+                        </span>
                     </td>
 
                     

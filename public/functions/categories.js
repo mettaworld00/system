@@ -33,9 +33,9 @@ $(document).ready(function () {
 
 /**
  * Agregar categoría
- */
+ ------------------------------------*/
 
- function AddCategorie(user_id){
+function AddCategorie(user_id) {
 
     $.ajax({
         type: "post",
@@ -47,42 +47,90 @@ $(document).ready(function () {
             action: 'agregarCategoria'
         },
         beforeSend: function () {
-           $('.loader').show();
+            $('.loader').show();
         },
         success: function (res) {
-             
-            try {
 
-                if (res != 1){
-                 throw new Error('No se ha podido insertar esta categoría');
-                }
-                
-            } catch (error) {
+            if (res == "ready") {
 
-                console.log(error)
-                $('.loader').hide();
+                $(".table").load(location.href + " .table");
+
+            } else {
+                alertify.alert("<div class='error-info'><i class='text-danger fas fa-exclamation-circle'></i>" + " " + res + "</div>").set('basic', true);
             }
-
-                $('.loader').hide();
+            $(".loader").hide();
         }
     });
 
- }
-/**
- * Borrar categoria
- ----------------------------------*/
+}
 
- function deleteCategory(id){
+/**
+ * Actualizar categoría
+ */
+
+ function UpdateCategorie(category_id) {
 
     $.ajax({
         type: "post",
         url: SITE_URL + "functions/categories.php",
         data: {
-            id: id,
-            action: 'eliminarCategoria'
+            category_id: category_id,
+            name: $('#category_name').val(),
+            comment: $('#category_comment').val(),
+            action: 'actualizar_categoria'
+        },
+        beforeSend: function () {
+            $('.loader').show();
         },
         success: function (res) {
-            console.log(res)
+
+            if (res == "ready") {
+
+                $(".table").load(location.href + " .table");
+
+            } else {
+                alertify.alert("<div class='error-info'><i class='text-danger fas fa-exclamation-circle'></i>" + " " + res + "</div>").set('basic', true);
+            }
+            $(".loader").hide();
         }
     });
- }
+
+}
+
+/**
+ * Eliminar categoria
+ ----------------------------------*/
+
+function deleteCategory(id) {
+
+    alertify.confirm(
+        "¿Estas seguro que deseas borrar esta categoría? ",
+        function () {
+
+            $.ajax({
+                type: "post",
+                url: SITE_URL + "functions/categories.php",
+                data: {
+                    category_id: id,
+                    action: 'eliminar_categoria'
+                },
+                beforeSend: function () {
+                    $(".loader").show();
+                },
+                success: function (res) {
+                    
+                    if (res == "ready") {
+
+                        $(".table").load(location.href + " .table");
+
+                    } else {
+                        alertify.alert("<div class='error-info'><i class='text-danger fas fa-exclamation-circle'></i>" + " " + res + "</div>").set('basic', true);
+                    }
+                    $(".loader").hide();
+
+                }
+            });
+
+        }
+    );
+}

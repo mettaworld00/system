@@ -24,6 +24,10 @@ label {
     font-weight: 500;
 }
 
+.note-width {
+    width: 25%;
+    text-align: justify;
+}
 
 .loading {
 
@@ -49,6 +53,11 @@ label {
     align-items: center;
 }
 
+.error-info {
+    font-size: 17px;
+    font-weight: 600;
+    text-align: center;
+}
 
 @keyframes ldio-1q5n8ygi9ox {
     0% {
@@ -855,7 +864,6 @@ input.input-border-botton {
 
 .action-disable {
     opacity: 0.2;
-
 }
 
 .action-delete {

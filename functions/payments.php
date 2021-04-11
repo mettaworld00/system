@@ -10,7 +10,6 @@ if ($_POST['action'] == 'agregarPago') {
 
     $db = Database::connect();
 
-    $warehouseID = $_SESSION['identity']->warehouse_id;
     $userID = $_SESSION['identity']->user_id;
     $customer_id = $_POST['debtor_id'];
     $invoice_id = $_POST['invoice_id'];
@@ -20,7 +19,7 @@ if ($_POST['action'] == 'agregarPago') {
     $value = $_POST['value'];
 
     $query1 = "SELECT pending FROM invoices 
-               WHERE invoice_id = '$invoice_id' AND warehouse_id = '$warehouseID'";
+               WHERE invoice_id = '$invoice_id'";
 
     $query2 = "SELECT *FROM invoices WHERE invoice_id = '$invoice_id'";
 
@@ -38,7 +37,7 @@ if ($_POST['action'] == 'agregarPago') {
             // Instrucciónes 
 
             $query = "INSERT INTO payments 
-                  VALUES (null,'$userID','$customer_id','$invoice_id','$payment_method','$warehouseID','$value','$note','$date')";
+                  VALUES (null,'$userID','$customer_id','$invoice_id','$payment_method','$value','$note','$date')";
 
             if ($db->query($query) === TRUE) {
 

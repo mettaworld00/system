@@ -10,14 +10,23 @@ session_start();
 if ($_POST['action'] == 'ventaSemanal') {
     $db = Database::connect();
 
-    $warehouseID = $_SESSION['identity']->warehouse_id;
-
     $query1 = "SET @@lc_time_names = 'es_DO';";
 
-    $query2 = "SELECT sum(i.money_received), dayname(i.created_at) FROM invoices i 
-               INNER JOIN users u ON i.user_id = u.user_id
-               WHERE u.warehouse_id = '$warehouseID' AND i.created_at BETWEEN date_add(NOW(), INTERVAL -7 DAY) AND NOW()
-               GROUP BY i.created_at";
+    $query2 = "SELECT sum(total) AS 'total', dayname(created_at) AS 'dayname' FROM (
+		
+                SELECT sum(i.money_received)  AS 'total', i.created_at AS 'created_at' FROM invoices i 
+                INNER JOIN users u ON i.user_id = u.user_id
+                WHERE i.created_at BETWEEN date_add(NOW(), INTERVAL -7 DAY) AND NOW() 
+                GROUP BY i.created_at
+            
+                UNION ALL
+
+                SELECT sum(i.money_received) AS 'total', i.created_at AS 'created_at' FROM service_invoices i
+                INNER JOIN users u ON i.user_id = u.user_id
+                WHERE i.created_at BETWEEN date_add(NOW(), INTERVAL -7 DAY) AND NOW() 
+                GROUP BY i.created_at
+        
+               ) ventas group by created_at";
 
              $db->query($query1);
     $datos = $db->query($query2);
@@ -39,15 +48,25 @@ if ($_POST['action'] == 'ventaSemanal') {
 if ($_POST['action'] == 'ventaMensual') {
     $db = Database::connect();
 
-    $warehouseID = $_SESSION['identity']->warehouse_id;
-
     $query1 = "SET @@lc_time_names = 'es_DO';";
 
-    $query2 = "SELECT sum(i.money_received), monthname(i.created_at) FROM invoices i 
-               INNER JOIN users u ON i.user_id = u.user_id
-               INNER JOIN status s on s.status_id = i.status_id
-               WHERE  s.status_name != 'Anulada' AND u.warehouse_id = '$warehouseID' AND i.created_at >= date_sub(curdate(), INTERVAL 12 MONTH) 
-               GROUP BY monthname(i.created_at)";
+    $query2 = "SELECT sum(total), monthname(created_at) as 'mes' FROM (
+
+               SELECT sum(i.money_received) AS 'total', i.created_at AS 'created_at', s.status_name FROM invoices i 
+                       INNER JOIN users u ON i.user_id = u.user_id
+                       INNER JOIN status s on s.status_id = i.status_id
+                       WHERE  s.status_name != 'Anulada' AND i.created_at >= date_sub(curdate(), INTERVAL 12 MONTH) AND NOW()
+                       GROUP BY i.created_at
+           
+               UNION ALL 
+                    
+               SELECT sum(i.money_received) AS 'total', i.created_at AS 'created_at', s.status_name FROM service_invoices i 
+                       INNER JOIN users u ON i.user_id = u.user_id
+                       INNER JOIN status s on s.status_id = i.status_id
+                       WHERE  s.status_name != 'Anulada' AND i.created_at >= date_sub(curdate(), INTERVAL 12 MONTH) AND NOW()
+                       GROUP BY i.created_at              
+                    
+                    ) ventas group by mes order by created_at ASC";
 
              $db->query($query1);
     $datos = $db->query($query2);

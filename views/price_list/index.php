@@ -10,6 +10,7 @@
         <a href="<?=base_url?>price_list/add" class="btn btn-sm btn-secondary">Nuevo lista de precios</a>
         </div>
     </div>
+    <p class="title-info">Define precios especiales para tus productos.</p>
 </div>
 
 
@@ -32,18 +33,14 @@
                <td><?= $list->list_id?></td>
                <td><?= $list->list_name?></td>
                <td>Porciento %(<?= $list->list_value ?>) </td>
-               <td><?= $list->observation?></td>
+               <td class="note-width"><?= $list->observation?></td>
                     <td>
 
-                        <a href="<?=base_url?>price_list/view&id=<?=$list->list_id?>">
-                        <span class="action-view"><i class="fas fa-eye"></i></span>
-                        </a>
-
-                        <a href="<?=base_url?>product/edit&id=<?=$product->product_id?>">
+                        <a href="<?=base_url?>price_list/edit&id=<?=$list->list_id?>">
                         <span class="action-edit"><i class="fas fa-pencil-alt"></i></span>
                         </a>
                         
-                        <span onclick="" class="action-delete"><i class="fas fa-trash-alt"></i></span>
+                        <span onclick="" class="action-delete">  <i class="fas fa-times"></i></span>
                       
                     </td>
                 </tr>

@@ -64,16 +64,13 @@ if ($_POST['action'] == "buscarItem") {
   $q = $_POST['product_code'];
   $db = Database::connect();
 
-  $warehouseID = $_SESSION['identity']->warehouse_id;
-  $query1 = "SELECT *FROM products WHERE product_code LIKE '%$q%' AND warehouse_id = $warehouseID";
+  $query1 = "SELECT *FROM products WHERE product_code LIKE '%$q%'";
 
   $query2 = "SELECT d.discount_value, t.tax_value, t.tax_name FROM products p 
-             INNER JOIN warehouses w on p.warehouse_id = w.warehouse_id
              LEFT JOIN products_discounts pd ON p.product_id = pd.product_id
              LEFT JOIN discounts d ON pd.discount_id = d.discount_id 
              LEFT JOIN products_taxes pt ON p.product_id = pt.product_id
-             LEFT JOIN taxes t ON pt.tax_id = t.tax_id
-             WHERE p.product_code LIKE '%$q%' AND w.warehouse_id = $warehouseID";
+             LEFT JOIN taxes t ON pt.tax_id = t.tax_id";
 
   $datos1 = $db->query($query1);
   $datos2 = $db->query($query2);
@@ -253,8 +250,7 @@ if ($_POST['action'] == 'procesarVenta') {
 
   $db = Database::connect();
 
-  $status = 4; // 3 = Pagada
-  $warehouseID = $_SESSION['identity']->warehouse_id;
+  $status = 4; // 4 = Pagada
   $customer_id = $_POST['customer_id'];
   $user_id = $_POST['user_id'];
   $payment_method = $_POST['payment_method'];
@@ -263,7 +259,7 @@ if ($_POST['action'] == 'procesarVenta') {
   $created_at = $_POST['created_at'];
   $expiration = $_POST['expiration'];
 
-  $query = "INSERT INTO invoices VALUES (null,'$noInvoice','$warehouseID','$payment_method',$status,'$customer_id','$user_id','$total_invoice','$total_invoice',null,'$expiration','$created_at')";
+  $query = "INSERT INTO invoices VALUES (null,'$noInvoice','$payment_method',$status,'$customer_id','$user_id','$total_invoice','$total_invoice',null,'$expiration','$created_at')";
 
   if ($db->query($query) === TRUE) {
 
@@ -301,6 +297,68 @@ if ($_POST['action'] == 'procesarVenta') {
   $db->query($query3);
 }
 
+
+// Procesar venta a crédito 
+
+if ($_POST['action'] == 'procesar-venta-a-credito') {
+
+  $db = Database::connect();
+
+  $status = 5; // 5 = Por cobrar
+  $noInvoice = $_POST['noinvoice'];
+  $customer_id = $_POST['customer_id'];
+  $user_id = $_SESSION['identity']->user_id;
+
+  $total_invoice = $_POST['purchase'];
+  $received = $_POST['received'];
+  $pending = $total_invoice - $received;
+
+  $payment_method = $_POST['payment_method'];
+  $created_at = $_POST['created_at'];
+  $expiration = $_POST['expiration'];
+
+    if($received < $total_invoice) { 
+
+      $query = "INSERT INTO invoices VALUES (null,'$noInvoice','$payment_method',$status,'$customer_id','$user_id','$total_invoice','$received','$pending','$expiration','$created_at')";
+
+      if ($db->query($query) === TRUE) {
+
+        $INVOICE_ID = $db->insert_id;
+
+        // Crear Detalle de factura
+
+        $query1 = "SELECT * FROM temp_detail ";
+        $datos = $db->query($query1);
+
+        while ($element = $datos->fetch_object()) {
+
+          $product_id = $element->product_id;
+          $total_price = $element->total_price;
+          $discount = $element->discount;
+          $total_quantity = $element->total_quantity;
+          $tax = $element->tax;
+
+          $query2 = "INSERT INTO invoice_detail VALUES (null,$product_id,$INVOICE_ID,$user_id,$total_quantity,$total_price,$discount,$tax,curdate())";
+          if ($db->query($query2) === TRUE) {
+
+            echo $INVOICE_ID; // ID de la factura
+
+          } else {
+
+            echo "Error: " . $db->error;
+          }
+        }
+      } else {
+
+        echo "Error: " . $db->error;
+      }
+
+      $query3 = "DELETE FROM temp_detail WHERE user_id = '$user_id'";
+      $db->query($query3);
+  } else {
+    echo 0;
+  }
+}
 
 
 

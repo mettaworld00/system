@@ -99,7 +99,7 @@
 
                             <?php $payments = Help::showPayments_methods();
                             while ($payment = $payments->fetch_object()) : ?>
-                                <option value="<?= $payment->payment_id ?>"><?= $payment->payment_name ?></option>
+                                <option value="<?= $payment->payment_method_id ?>"><?= $payment->payment_name ?></option>
                             <?php endwhile; ?>
 
                         </select>

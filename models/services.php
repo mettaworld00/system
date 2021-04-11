@@ -24,7 +24,7 @@ class Services extends ModeloBase {
         c.customer_name, s.status_name from service_invoices si 
         INNER JOIN status s ON si.status_id = s.status_id 
         INNER JOIN customers c ON si.customer_id = c.customer_id
-        INNER JOIN payment_methods p ON si.payment_id = p.payment_id";
+        INNER JOIN payment_methods p ON si.payment_method_id = p.payment_method_id";
 
         return $this->db->query($query);
     }
