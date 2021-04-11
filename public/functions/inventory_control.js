@@ -329,7 +329,7 @@ $(document).ready(function () {
      * Crear Ajuste de inventario
      ------------------------------------------*/
 
-function addSettings(user_id, warehouse_id) {
+function addSettings(user_id) {
 
 
     if (localStorage.getItem('settings') != null) {
@@ -341,24 +341,16 @@ function addSettings(user_id, warehouse_id) {
             url: SITE_URL + "functions/inventory_control.php",
             data: {
                 userID: user_id,
-                warehouse_id: warehouse_id,
                 total_setting: $('#total_setting_hidden').val(),
                 observation: $('#observation_setting').val(),
                 action: 'crearAjuste'
             },
             success: function (res) {
 
-                try {
-
-                    if (res > 0) {
-                        createDetail(res, arr);
-                    } else {
-                        throw new Error('No se pudo crear el ajuste ' + res);
-                    }
-
-                } catch (error) {
-
-                    console.log(error);
+                if (res > 0) {
+                    createDetail(res, arr);
+                } else {
+                    alertify.alert("<div class='error-info'><i class='text-danger fas fa-exclamation-circle'></i>" + " " + res + "</div>").set('basic', true);
                 }
 
             }
@@ -386,8 +378,20 @@ function addSettings(user_id, warehouse_id) {
                     action: 'agregarDetalleAlAjustes'
 
                 },
+                beforeSend: function () {
+                    $(".loader").show();
+                },
                 success: function (res) {
-                    console.log(res)
+                 
+                    if (res == "ready") {
+
+                     
+
+                    } else {
+                        alertify.alert("<div class='error-info'><i class='text-danger fas fa-exclamation-circle'></i>" + " " + res + "</div>").set('basic', true);
+                    }
+                  
+                    $(".loader").hide();
                 }
             });
 

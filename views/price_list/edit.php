@@ -13,7 +13,7 @@
 
 
 <div class="generalContainer-medium">
-    <form action="" onsubmit="event.preventDefault(); UpdateList('<?=$_GET['id'] ?>');">
+    <form action="" onsubmit="event.preventDefault(); UpdateList('<?= $_GET['id']; ?>');">
         <div class="container row">
 
             <div class="form-group col-md-8">

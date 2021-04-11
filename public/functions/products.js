@@ -377,32 +377,35 @@ function enableProduct(product_id) {
 // Eliminar producto
 
 function deleteProduct(id) {
-  var action = "eliminarProducto";
 
   alertify.confirm(
     "¿Estas seguro que deseas borrar este producto? ",
     function () {
+
       $.ajax({
-        url: "http://localhost/sistem/functions/products.php",
+        url: SITE_URL + "functions/products.php",
         method: "post",
         data: {
-          action: action,
+          action: "eliminarProducto",
           product_id: id,
         },
-        success: function (res) {
-          console.log(res);
-          if (res == 1) {
-            $(".table").load(location.href + " .table");
-
-            alertify.success("Item eliminado");
-          } else {
-            alertify.error("No se ha podido eliminar este producto");
-          }
+        beforeSend: function () {
+          $(".loader").show();
         },
+        success: function (res) {
+        
+          if (res == "ready") {
+
+            $(".table").load(location.href + " .table");
+    
+          } else {
+            alertify.alert("<div class='error-info'><i class='text-danger fas fa-exclamation-circle'></i>"+" "+res+"</div>").set('basic', true);
+          }
+          $(".loader").hide();
+        }
+
       });
-    },
-    function () {
-      alertify.error("Cancelado");
+
     }
   );
 }

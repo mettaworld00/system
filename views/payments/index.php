@@ -39,7 +39,9 @@
                     <td class="note-width"><?= $element->note ?></td>
                     <td><?= $element->created_at ?></td>
                     <td>
-                    <span onclick="deleteInvoice('<?= $element->invoice_id ?>')" class="action-delete"><i class="fas fa-trash-alt"></i></span>
+                        <span onclick="deleteInvoice('<?= $element->invoice_id ?>')" class="action-delete">
+                        <i class="fas fa-times"></i>
+                        </span>
                     </td>
 
                     

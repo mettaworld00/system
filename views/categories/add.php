@@ -6,7 +6,7 @@
 
 
     </div>
-    <p class="title-info">Utiliza las categorías si deseas manejar tus items por grupos.</p>
+    <p class="title-info">Utiliza las categorías si deseas manejar tus items por grupos u organizarlos.</p>
 </div>
 
 

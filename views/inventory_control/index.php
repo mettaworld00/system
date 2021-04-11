@@ -20,7 +20,6 @@
             <tr>
                 <th>No.</th>
                 <th>Fecha</th>
-                <th>Almacén</th>
                 <th>Total</th>
                 <th>Observación</th>
                 <th>Acciones</th>
@@ -34,16 +33,15 @@
            <tr>
                <td><?=$setting->item_setting_id?></td>
                <td><?=$setting->created_at?></td>
-               <td><?=$setting->warehouse_name ?></td>
                <td><?= number_format($setting->total_setting)?></td>
-               <td><?=$setting->observation?></td>
+               <td class="note-width"><?=$setting->observation?></td>
                     <td>
 
                         <a href="<?=base_url?>product/view&id=<?=$product->product_id?>">
                         <span class="action-view"><i class="fas fa-eye"></i></span>
                         </a>
                         
-                        <span onclick="deleteSetting('<?=$setting->item_setting_id?>')" class="action-delete"><i class="fas fa-trash-alt"></i></span>
+                        <span onclick="deleteSetting('<?=$setting->item_setting_id?>')" class="action-delete"><i class="fas fa-times"></i></span>
                       
                     </td>
                 </tr>

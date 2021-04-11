@@ -19,5 +19,10 @@ class TaxesController
 
         require_once './views/taxes/add.php';
     }
+
+    public function edit(){
+
+        require_once './views/taxes/edit.php';
+    }
   
 }

@@ -138,10 +138,10 @@
               <div class="link"><i class="mr-3 fas fa-box"></i>Inventario <i class="fas fa-chevron-down"></i></div>
               <ul class="submenu ">
                 <li class="page"><a href="<?= base_url ?>product/index">Items de venta</a> <a href="<?= base_url ?>product/add"><i class="fas fa-plus-circle"></i></a></li>
+                <li class="page"><a href="<?= base_url ?>services/index">Items no inventariable</a> <a href="<?= base_url ?>services/add"><i class="fas fa-plus-circle"></i></a></li>
                 <li class="page"><a href="<?= base_url ?>inventory_control/index">Ajustes de inventario</a> <a href="<?= base_url ?>inventory_control/add"><i class="fas fa-plus-circle"></i></a></li>
                 <li><a href="<?= base_url ?>inventory_control/inventory">Valor de inventario</a></li>
                 <li class="page"><a href="<?= base_url ?>price_list/index">Lista de précios</a> <a href="<?= base_url ?>price_list/add"><i class="fas fa-plus-circle"></i></a></li>
-                <li class="page"><a href="<?= base_url ?>services/index">Servicios</a> <a href="<?= base_url ?>services/add"><i class="fas fa-plus-circle"></i></a></li>
                 <!-- <li class="page"><a href="">Almacenes</a></li> -->
                 <li class="page"><a href="<?= base_url ?>categories/index">Categorías</a> <a href="<?= base_url ?>categories/add"><i class="fas fa-plus-circle"></i></a></li>
                 <li class="page"><a href="<?= base_url ?>taxes/index">Impuestos</a> <a href="<?= base_url ?>taxes/add"><i class="fas fa-plus-circle"></i></a></li>

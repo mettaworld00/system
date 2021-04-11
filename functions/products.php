@@ -11,9 +11,16 @@ if ($_POST['action'] == "eliminarProducto") {
 
   $db = Database::connect();
 
-  $query = "DELETE FROM products WHERE product_id = '$id'";
-  if ($db->query($query) === TRUE) {
-    echo 1;
+  $query = "DELETE FROM products_discounts WHERE product_id = '$id';";
+  $query .= "DELETE FROM products_price_lists WHERE product_id = '$id';";
+  $query .= "DELETE FROM products_taxes WHERE product_id = '$id';";
+  $query .= "DELETE FROM products_categories WHERE product_id = '$id';";
+  $query .= "DELETE FROM products WHERE product_id = '$id';";
+
+  if ($db->multi_query($query) === TRUE) {
+
+    echo "ready";
+
   } else {
 
     echo "Error: " . $db->error;
@@ -26,7 +33,6 @@ if ($_POST['action'] == "eliminarProducto") {
 
  if ($_POST['action'] == "verificar-codigo") {
 
-  $warehouseID = $_SESSION['identity']->warehouse_id;
   $code = $_POST['product_code'];
 
   $db = Database::connect();
@@ -221,7 +227,7 @@ if ($_POST['action'] == 'buscarImpuesto') {
 
 
 /**
- * Desactivar Factura
+ * Desactivar producto
  ----------------------------------------------*/
 
  if ($_POST['action'] == "desactivarProducto") {
@@ -247,7 +253,7 @@ if ($_POST['action'] == 'buscarImpuesto') {
 }
 
 /**
- * Activar Factura
+ * Activar producto
  ----------------------------------------------*/
 
  if ($_POST['action'] == "activarProducto") {

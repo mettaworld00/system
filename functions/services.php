@@ -3,6 +3,27 @@
 require_once '../config/db.php';
 session_start();
 
+//  Eliminar producto
+
+if ($_POST['action'] == "eliminar_servicio") {
+
+  $id = $_POST['service_id'];
+
+  $db = Database::connect();
+
+  $query = "DELETE FROM service_detail WHERE service_id = '$id';";
+  $query .= "DELETE FROM services WHERE service_id = '$id';";
+
+  if ($db->multi_query($query) === TRUE) {
+
+    echo "ready";
+
+  } else {
+
+    echo "Error: " . $db->error;
+  }
+}
+
 /**
  * Generar No. Servicio
  ----------------------------------*/
@@ -26,6 +47,7 @@ if ($_POST['action'] == "generarNoServicio") {
   }
 }
 
+// Buscar servicio
 
 if ($_POST['action'] == "buscarServicio") {
 
@@ -72,7 +94,6 @@ if ($_POST['action'] == "procesarVenta") {
 
   $status = 4; // 4 = Pagado
   $customer_id = $_POST['customer_id'];
-  $warehouseID = $_SESSION['identity']->warehouse_id;
   $user_id = $_SESSION['identity']->user_id;
   $payment_method = $_POST['payment_method'];
   $total_invoice = $_POST['purchase'];
@@ -82,7 +103,7 @@ if ($_POST['action'] == "procesarVenta") {
 
   $db = Database::connect();
 
-  $query = "INSERT INTO service_invoices VALUES (null,'$noInvoice','$warehouseID','$payment_method',$status,'$customer_id',
+  $query = "INSERT INTO service_invoices VALUES (null,'$noInvoice','$payment_method',$status,'$customer_id',
     '$user_id','$total_invoice','$total_invoice',null,'$expiration','$created_at')";
 
   if ($db->query($query) === TRUE) {
@@ -284,6 +305,59 @@ function deleteInvoiceNull($invoice_id)
 
         echo "Error: " . $db->error;
       }
+  
+  } else {
+
+    echo "Error: " . $db->error;
+  }
+}
+
+
+/**
+ * Desactivar servicio
+ ----------------------------------------------*/
+
+ if ($_POST['action'] == "desactivar-servicio") {
+  $db = Database::connect();
+
+  $service_id = $_POST['service_id'];
+
+  $query = "SELECT * FROM status WHERE status_name = 'Inactivo'";
+  $datos = $db->query($query);
+
+  $element = $datos->fetch_object();
+  $statusID = $element->status_id;
+
+  $query2 = "UPDATE services SET status_id = $statusID WHERE service_id = '$service_id'";
+  if ($db->query($query2) === TRUE) {
+
+    echo "listo";
+  
+  } else {
+
+    echo "Error: " . $db->error;
+  }
+}
+
+/**
+ * Activar servicio
+ ----------------------------------------------*/
+
+ if ($_POST['action'] == "activar-servicio") {
+  $db = Database::connect();
+
+  $service_id = $_POST['service_id'];
+
+  $query = "SELECT * FROM status WHERE status_name = 'Activo'";
+  $datos = $db->query($query);
+
+  $element = $datos->fetch_object();
+  $statusID = $element->status_id;
+
+  $query2 = "UPDATE services SET status_id = $statusID WHERE service_id = '$service_id'";
+  if ($db->query($query2) === TRUE) {
+
+    echo "listo";
   
   } else {
 

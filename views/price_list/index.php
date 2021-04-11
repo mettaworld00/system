@@ -10,6 +10,7 @@
         <a href="<?=base_url?>price_list/add" class="btn btn-sm btn-secondary">Nuevo lista de precios</a>
         </div>
     </div>
+    <p class="title-info">Define precios especiales para tus productos.</p>
 </div>
 
 
@@ -39,7 +40,7 @@
                         <span class="action-edit"><i class="fas fa-pencil-alt"></i></span>
                         </a>
                         
-                        <span onclick="" class="action-delete"><i class="fas fa-trash-alt"></i></span>
+                        <span onclick="" class="action-delete">  <i class="fas fa-times"></i></span>
                       
                     </td>
                 </tr>
