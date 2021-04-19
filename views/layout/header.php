@@ -10,6 +10,7 @@
   <?php if (isset($_SESSION['admin']) || isset($_SESSION['identity'])) : ?>
 
     <link rel="stylesheet" href="<?= base_url ?>/public/style.css">
+    <link rel="stylesheet" href="<?= base_url ?>/public/login.css">
 
 
   <?php endif; ?>
