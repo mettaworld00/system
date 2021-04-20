@@ -7,16 +7,17 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Sistema de venta</title>
 
-  <link rel="stylesheet" href="<?= base_url ?>/public/login.css">
+ 
   
-  <?php if (isset($_SESSION['admin']) || isset($_SESSION['identity'])) : ?>
-
+  <?php if (isset($_SESSION['admin']) || isset($_SESSION['identity'])) { ?>
  
     <link rel="stylesheet" href="<?= base_url ?>/public/style.css">
-  
 
+  <?php } else { ?>
 
-  <?php endif; ?>
+    <link rel="stylesheet" href="<?= base_url ?>/public/login.css">
+
+  <?php } ?>
 
   <script src="<?= base_url ?>/public/jquery/jquery.js" type="text/javascript"></script>
   <script src="<?= base_url ?>/public/scripts.js" text="text/javascript"></script>

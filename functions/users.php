@@ -16,8 +16,10 @@ if ($_POST['action'] == "login") {
 
         $_SESSION['identity'] = $data;
 
+        echo "approved";
+
         } else {
-            echo 'diferentes';
+            echo 'denied';
             
         }
 
@@ -46,11 +48,15 @@ if ($_POST['action'] == "login") {
   }
 
 
+  /**
+   * Cerrar sesión
+   -------------------------------------------------------------*/
+
   if ($_POST['action'] == "logout"){
       
     session_destroy();
 
-    echo "sesion cerrada";
+    echo "ready";
   }
 
 
