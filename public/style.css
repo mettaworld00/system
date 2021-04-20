@@ -991,17 +991,6 @@ Tabs
     font-weight: 500;
 }
 
-
-
-
-
-
-
-
-
-
-
-
 .generalPriceList {
     display: flex;
     justify-content: space-between;
@@ -1012,3 +1001,4 @@ Tabs
     height: 40px;
     border-top: 1px solid #ccc;
 }
+
