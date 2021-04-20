@@ -34,20 +34,42 @@ function PAGE_INDEX($CONTROLLER_NAME)
 }
 
 if (isset($_GET['controller']) && isset($_GET['action'])) {
+
+    if (isset($_SESSION['admin']) || isset($_SESSION['identity'])) {
+
+        $CONTROLLER_NAME = $_GET['controller'] . 'Controller';
+        PAGE_INDEX($CONTROLLER_NAME);
+
+    } else {
+        $CONTROLLER_NAME = NO_LOGIN_CONTROLLER;
+        $ACTION = NO_LOGIN_ACTION;
+
+        $CLASSNAME = new $CONTROLLER_NAME();
+        $CLASSNAME->$ACTION();
+    }
     
-    $CONTROLLER_NAME = $_GET['controller'] . 'Controller';
-    PAGE_INDEX($CONTROLLER_NAME);
+   
     
     
 } else if (!isset($_GET['controller']) || !isset($_GET['action'])) {
 
     // Sin datos en la URL
+
+    if (isset($_SESSION['admin']) || isset($_SESSION['identity'])) {
     
     $CONTROLLER_NAME = DEFAULT_CONTROLLER;
     $ACTION = DEFAULT_ACTION;
 
     $CLASSNAME = new $CONTROLLER_NAME();
     $CLASSNAME->$ACTION();
+
+    } else {
+        $CONTROLLER_NAME = NO_LOGIN_CONTROLLER;
+        $ACTION = NO_LOGIN_ACTION;
+
+        $CLASSNAME = new $CONTROLLER_NAME();
+        $CLASSNAME->$ACTION();
+    }
  
 }
 

@@ -7,10 +7,13 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Sistema de venta</title>
 
+  <link rel="stylesheet" href="<?= base_url ?>/public/login.css">
+  
   <?php if (isset($_SESSION['admin']) || isset($_SESSION['identity'])) : ?>
 
+ 
     <link rel="stylesheet" href="<?= base_url ?>/public/style.css">
-    <link rel="stylesheet" href="<?= base_url ?>/public/login.css">
+  
 
 
   <?php endif; ?>
