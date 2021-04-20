@@ -7,6 +7,15 @@ require_once 'config/parameters.php';
 require_once 'views/layout/header.php';
 
 
+function NO_LOGIN()
+{
+    $CONTROLLER_NAME = NO_LOGIN_CONTROLLER;
+    $ACTION = NO_LOGIN_ACTION;
+
+    $CLASSNAME = new $CONTROLLER_NAME();
+    $CLASSNAME->$ACTION();
+}
+
 function PAGE_INDEX($CONTROLLER_NAME) 
 {
     if (class_exists($CONTROLLER_NAME)) {
@@ -41,11 +50,7 @@ if (isset($_GET['controller']) && isset($_GET['action'])) {
         PAGE_INDEX($CONTROLLER_NAME);
 
     } else {
-        $CONTROLLER_NAME = NO_LOGIN_CONTROLLER;
-        $ACTION = NO_LOGIN_ACTION;
-
-        $CLASSNAME = new $CONTROLLER_NAME();
-        $CLASSNAME->$ACTION();
+       NO_LOGIN();
     }
     
    
@@ -64,11 +69,9 @@ if (isset($_GET['controller']) && isset($_GET['action'])) {
     $CLASSNAME->$ACTION();
 
     } else {
-        $CONTROLLER_NAME = NO_LOGIN_CONTROLLER;
-        $ACTION = NO_LOGIN_ACTION;
+        // Usuario no logeado
 
-        $CLASSNAME = new $CONTROLLER_NAME();
-        $CLASSNAME->$ACTION();
+        NO_LOGIN();
     }
  
 }
