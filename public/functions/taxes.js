@@ -3,10 +3,6 @@ $(document).ready(function () {
     const SITE_URL = "http://localhost/sistem/";
 
 
-
-
-
-
 }) // Ready
 
 
