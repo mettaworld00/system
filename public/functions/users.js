@@ -25,7 +25,7 @@ $(document).ready(function () {
            success: function (res) {
            
                 if (res == "approved") {
-                    location.href="/home/index";
+                    location.href=SITE_URL+"/home/index";
                 } else {
                     $('.i').css('color','red');
                     $('.i').css('transition','0.4s all ease');

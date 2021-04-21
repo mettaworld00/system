@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+
   // window.onload = localStorage.clear(); // limpiar localstorage al cargar
 
   /**

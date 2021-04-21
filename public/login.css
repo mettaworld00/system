@@ -16,9 +16,6 @@ aside.sidebar {
 @media (min-width: 1200px) {
     aside.sidebar {
         width: 30%;
-        display: flex;
-        justify-content: left;
-        align-items: center;
     }
 }
 
