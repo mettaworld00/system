@@ -18,7 +18,7 @@ $(document).ready(function () {
 
     function reload() {
 
-      
+
 
         $.ajax({
             type: "post",
@@ -462,7 +462,7 @@ $(document).ready(function () {
                 success: function (res) {
 
                     createServiceDetail(res) // Crear detalle
-                  
+
                 }
             });
 
@@ -509,7 +509,7 @@ $(document).ready(function () {
                             $('#total_service_subtotal').val('0.00');
 
                             reload();; // Generar número de la nueva factura
-                            
+
                             $('.loader').hide()
                         } else {
                             console.log(res)
@@ -550,7 +550,7 @@ $(document).ready(function () {
             },
             success: function (res) {
 
-                updatePriceInvoice(invoice_id);
+                updatePriceInvoiceService(invoice_id);
 
                 $('#Detalle').load(location.href + " #Detalle");
 
@@ -596,7 +596,7 @@ function AddService() {
         },
         success: function (res) {
             window.location.reload();
-           
+
         }
     });
 
@@ -605,7 +605,7 @@ function AddService() {
 
 // Eliminar del detalle de factura
 
-function deleteInvoiceDetail(service_detail_id, invoice_id) {
+function deleteServiceInvoiceDetail(service_detail_id, invoice_id) {
 
     alertify.confirm("Eliminar compra", "¿Desea eliminar esta compra? ",
         function () {
@@ -625,7 +625,7 @@ function deleteInvoiceDetail(service_detail_id, invoice_id) {
 
                     if (res == 1) {
 
-                        updatePriceInvoice(invoice_id); // Actualizar precio de factura
+                        updatePriceInvoiceService(invoice_id); // Actualizar precio de factura
 
                         $('#Detalle').load(location.href + " #Detalle");
                         // detailTotal() // Calcular detalle de factura
@@ -649,7 +649,7 @@ function deleteInvoiceDetail(service_detail_id, invoice_id) {
 
 // Actualizar precio de factura
 
-function updatePriceInvoice(invoice_id) {
+function updatePriceInvoiceService(invoice_id) {
 
     var action = "actualizarFactura";
 
@@ -695,5 +695,97 @@ function disabledServiceInvoice(invoice_id) {
         function () {
 
         });
-
 }
+
+// Desactivar servicio
+
+function disableService(service_id) {
+    alertify.confirm(
+        "<i class='text-warning fas fa-exclamation-circle'></i> Desactivar servicio",
+        "¿Desea desactivar este servicio? ",
+        function () {
+            $.ajax({
+                type: "post",
+                url: SITE_URL + "functions/services.php",
+                data: {
+                    service_id: service_id,
+                    action: "desactivar-servicio",
+                },
+                beforeSend: function () {
+                    $(".loader").show();
+                },
+                success: function (res) {
+                    console.log(res)
+                    $("#example").load(" #example");
+                    $(".loader").hide();
+                },
+            });
+        },
+        function () { }
+    );
+}
+
+// Activar servicio
+
+function enableService(service_id) {
+    alertify.confirm(
+        "Activar servicio",
+        "¿Desea activar este servicio? ",
+        function () {
+            $.ajax({
+                type: "post",
+                url: SITE_URL + "functions/services.php",
+                data: {
+                    service_id: service_id,
+                    action: "activar-servicio",
+                },
+                beforeSend: function () {
+                    $(".loader").show();
+                },
+                success: function (res) {
+                    console.log(res)
+                    $("#example").load(" #example");
+                    $(".loader").hide();
+                },
+            });
+        },
+        function () { }
+    );
+}
+
+// Eliminar servicio
+
+function deleteService(id) {
+   
+  
+    alertify.confirm(
+      "¿Estas seguro que deseas borrar este servicio? ",
+      function () {
+  
+        $.ajax({
+          url: SITE_URL + "functions/services.php",
+          method: "post",
+          data: {
+            action: "eliminar_servicio",
+            service_id: id
+          },
+          beforeSend: function () {
+            $(".loader").show();
+          },
+          success: function (res) {
+          
+            if (res == "ready") {
+  
+              $(".table").load(location.href + " .table");
+      
+            } else {
+              alertify.alert("<div class='error-info'><i class='text-danger fas fa-exclamation-circle'></i>"+" "+res+"</div>").set('basic', true);
+            }
+            $(".loader").hide();
+          }
+  
+        });
+  
+      }
+    );
+  }

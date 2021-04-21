@@ -19,4 +19,11 @@ class Price_listController{
         
     }
 
+    public function edit(){
+
+        require_once './views/price_list/edit.php';
+        
+    }
+
+
 }

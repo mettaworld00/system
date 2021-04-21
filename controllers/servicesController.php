@@ -21,12 +21,6 @@ class ServicesController
     require_once './views/services/invoices.php';
   }
 
-  public function edit()
-  {
-
-    require_once './views/services/edit.php';
-  }
-
   public function addpurchase()
   {
 

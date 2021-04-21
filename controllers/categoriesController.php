@@ -20,4 +20,9 @@ class CategoriesController
         require_once './views/categories/add.php';
     }
   
+    public function edit(){
+
+        require_once './views/categories/edit.php';
+    }
+  
 }

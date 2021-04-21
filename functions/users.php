@@ -16,8 +16,10 @@ if ($_POST['action'] == "login") {
 
         $_SESSION['identity'] = $data;
 
+        echo "approved";
+
         } else {
-            echo 'diferentes';
+            echo 'denied';
             
         }
 
@@ -46,50 +48,19 @@ if ($_POST['action'] == "login") {
   }
 
 
+  /**
+   * Cerrar sesión
+   -------------------------------------------------------------*/
+
   if ($_POST['action'] == "logout"){
       
     session_destroy();
 
-    echo "sesion cerrada";
+    echo "ready";
   }
 
 
 
-
-function login()
-{
-    $result = false;
-
-    $username = $this->usuario;
-    $password = $this->password;
-
-    $query = "SELECT *FROM usuarios WHERE usuario = '$username'";
-    $login = $this->db->query($query);
-
-    if ($login && $login->num_rows == 1) {
-        $usuario = $login->fetch_object();
-
-        $verify = password_verify($password, $usuario->password);
-        $verify2 = $password;   // verificar contraseña normal 
-
-        if ($verify) {
-
-            $result = $usuario;
-            header("Location: " . base_url);
-        } else  if ($verify2 == $usuario->password) {
-
-            $result = $usuario;
-            header("Location: " . base_url);
-        } else {
-            $result = false;
-        }
-        
-    } else {
-        $result = false;
-    }
-
-    return $result;
-}
 
 
 

@@ -47,9 +47,17 @@
                     </td>
 
                     <td>
-                        <a href="<?= base_url ?>product/view&id=<?= $element->invoice_id ?>">
-                            <span class="action-view"><i class="fas fa-eye"></i></span>
+
+                        <a class="action-paid <?php if ($element->status_name != 'Por cobrar'): ?> action-disable  <?php endif; ?>" 
+                             href="<?php if ($element->status_name == 'Por cobrar') { 
+                                    echo base_url.'payments/view&id='.$element->invoice_id; 
+                                    } else { echo '#'; } ?> "> 
+                             <i class="fas fa-hand-holding-usd"></i>
                         </a>
+
+                        <!-- <a href="<?= base_url ?>product/view&id=<?= $element->invoice_id ?>">
+                            <span class="action-view"><i class="fas fa-eye"></i></span>
+                        </a> -->
 
                         <a  class="action-edit <?php if ($element->status_name == 'Pagada' || $element->status_name == 'Anulada') { ?> action-disable <?php } ?> " 
                                  href="<?php if ($element->status_name == 'Por cobrar') { 

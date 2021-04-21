@@ -8,6 +8,16 @@ class Help
    *  -----------------------------------------------------------------------------------------------------
    * */
 
+   // Función para verificar los parent rows de un producto
+
+   public static function verify_parent_product($id)
+   {
+      $query = "SELECT count(invoice_detail_id) AS 'parent_row' FROM invoice_detail WHERE product_id = '$id'";
+
+      $db = Database::connect();
+      return $db->query($query);
+   }
+
    // Función para mostrar las unidades de medida
 
    public static function showUnits()
@@ -28,6 +38,26 @@ class Help
       return $db->query($query);
    }
 
+    // Función para mostrar categorias por id
+
+    public static function showCategoriesID($id)
+    {
+       $query = "SELECT *FROM categories WHERE category_id = '$id'";
+ 
+       $db = Database::connect();
+       return $db->query($query);
+    }
+
+    // Función para verificar los parent rows de una categoría
+
+    public static function verify_parent_category($id)
+    {
+       $query = "SELECT count(category_id) AS 'parent_row' FROM products_categories WHERE category_id = '$id'";
+ 
+       $db = Database::connect();
+       return $db->query($query);
+    }
+
    // Función para mostrar impuestos
 
    public static function showTaxes()
@@ -36,7 +66,29 @@ class Help
 
       $db = Database::connect();
       return $db->query($query);
+   
    }
+
+   // Función para mostrar impuestos por id
+
+   public static function showTaxID($id)
+   {
+      $query = "SELECT *FROM taxes WHERE tax_id = '$id'";
+
+      $db = Database::connect();
+      return $db->query($query);
+   
+   }
+   
+     // Función para verificar los parent rows de un impuesto
+
+     public static function verify_parent_tax($id)
+     {
+        $query = "SELECT count(tax_id) AS 'parent_row' FROM products_taxes WHERE tax_id = '$id'";
+  
+        $db = Database::connect();
+        return $db->query($query);
+     }
 
    // Función para mostrar almacenes
 
@@ -71,6 +123,16 @@ class Help
       return $db->query($query);
    }
 
+   // Función para verificar los parent rows de una price_list
+
+   public static function verify_parent_price_list($id)
+   {
+      $query = "SELECT count(product_id) AS 'parent_row' FROM products_price_lists WHERE list_id = '$id'";
+
+      $db = Database::connect();
+      return $db->query($query);
+   }
+
    // Función para mostrar tipos de ajuste de inventario
 
    public static function showType_item_setting()
@@ -92,16 +154,16 @@ class Help
       p.quantity, p.inventary_min, p.expiration, p.created_at, c.category_id, 
       c.category_name, d.discount_id, d.discount_name, d.discount_value, t.tax_id, t.tax_name, 
       t.tax_value, w.warehouse_id, w.warehouse_name, u.unit_id, u.unit_name FROM products p 
+            LEFT JOIN warehouses w ON p.warehouse_id = w.warehouse_id
             LEFT JOIN products_categories pc ON p.product_id = pc.product_id
             LEFT JOIN categories c ON pc.category_id = c.category_id
             LEFT JOIN products_discounts pd ON p.product_id = pd.product_id
             LEFT JOIN discounts d ON pd.discount_id = d.discount_id
             LEFT JOIN products_taxes pt ON p.product_id = pt.product_id
             LEFT JOIN taxes t ON pt.tax_id = t.tax_id
-            LEFT JOIN products_warehouses pw ON p.product_id = pw.product_id
-            LEFT JOIN warehouses w ON pw.warehouse_id = w.warehouse_id
             LEFT JOIN units u ON p.unit_id = u.unit_id
             WHERE p.product_id = '$product_id'";
+
 
       $db = Database::connect();
       return $db->query($query);
@@ -112,12 +174,10 @@ class Help
    public static function showProducts()
    {
 
-      $warehouseID = $_SESSION['identity']->warehouse_id;
-
       $query = "SELECT *FROM products p 
       INNER JOIN warehouses w on p.warehouse_id = w.warehouse_id 
       INNER JOIN status s ON p.status_id = s.status_id
-      WHERE s.status_name = 'Activo' AND w.warehouse_id = $warehouseID ";
+      WHERE s.status_name = 'Activo' ";
 
       $db = Database::connect();
       return $db->query($query);
@@ -129,6 +189,17 @@ class Help
    {
 
       $query = "SELECT *FROM price_lists";
+
+      $db = Database::connect();
+      return $db->query($query);
+   }
+
+   // Función para mostrar lista de precios por ID
+
+   public static function showPrice_listID($id)
+   {
+
+      $query = "SELECT *FROM price_lists WHERE list_id = '$id'";
 
       $db = Database::connect();
       return $db->query($query);
@@ -194,7 +265,7 @@ class Help
       FROM invoices i 
       INNER JOIN customers c ON i.customer_id = c.customer_id
       INNER JOIN status s ON i.status_id = s.status_id 
-      INNER JOIN payment_methods p ON i.payment_id = p.payment_id
+      INNER JOIN payment_methods p ON i.payment_method_id = p.payment_method_id
       INNER JOIN users u ON i.user_id = u.user_id 
       WHERE i.invoice_id = '$id'";
 
@@ -222,12 +293,23 @@ class Help
     * Servicios
     ------------------------------------------------------*/
 
+   // Función para verificar los parent rows de un servicio
+
+   public static function verify_parent_service($id)
+   {
+      $query = "SELECT count(service_detail_id) AS 'parent_row' FROM service_detail WHERE service_id = '$id'";
+
+      $db = Database::connect();
+      return $db->query($query);
+   }
+
 
    // Funcion para mostrar los servicios
 
    public static function showServices()
    {
-      $query = "SELECT *FROM services";
+      $query = "SELECT *FROM services s
+               INNER JOIN status st ON s.status_id = st.status_id WHERE st.status_name = 'Activo'";
 
       $db = Database::connect();
       return $db->query($query);
@@ -246,7 +328,7 @@ class Help
       FROM service_invoices si 
       INNER JOIN customers c ON si.customer_id = c.customer_id
       INNER JOIN status s ON si.status_id = s.status_id 
-      INNER JOIN payment_methods p ON si.payment_id = p.payment_id
+      INNER JOIN payment_methods p ON si.payment_method_id = p.payment_method_id
       INNER JOIN users u ON si.user_id = u.user_id 
       WHERE si.service_invoice_id = '$id'";
 
@@ -274,20 +356,22 @@ class Help
     * Transaciones
    ------------------------------------------------ */
 
-   public static function showTransactionIN($number)
+   // Función para mostrar los datos de una factura a crédito
+
+   public static function showTransactionIN($id)
    {
 
       $db = Database::connect();
 
       $query = "SELECT 
       i.invoice_id, i.noinvoice, i.total_invoice, i.money_received, i.pending, i.expiration, i.created_at as 'date',
-      c.customer_name, c.rnc, c.telephone1, s.status_name, p.payment_name, u.user_id, u.username, u.name
+      c.customer_name, c.customer_id, c.rnc, c.telephone1, s.status_name, p.payment_name, u.user_id, u.username, u.name
       FROM invoices i 
       INNER JOIN customers c ON i.customer_id = c.customer_id
       INNER JOIN status s ON i.status_id = s.status_id 
-      INNER JOIN payment_methods p ON i.payment_id = p.payment_id
+      INNER JOIN payment_methods p ON i.payment_method_id = p.payment_method_id
       INNER JOIN users u ON i.user_id = u.user_id 
-      WHERE i.noinvoice = '$number'";
+      WHERE i.invoice_id = '$id'";
 
       return $db->query($query);
    }

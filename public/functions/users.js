@@ -3,8 +3,11 @@ $(document).ready(function () {
     const SITE_URL = "http://localhost/sistem/";
 
 
+    // Iniciar sesión
 
-    $('#login').on('click', (e)=>{
+    $('.load').hide();
+
+    $('#login').on('submit', (e)=>{
       e.preventDefault();
 
        $.ajax({
@@ -15,8 +18,20 @@ $(document).ready(function () {
                password: $('#userPassword').val(),
                action: 'login'
            },
+           beforeSend: function () {
+               $('#btn-txt').hide();
+               $('.load').show();
+           },
            success: function (res) {
-                console.log(res)
+           
+                if (res == "approved") {
+                    location.href=SITE_URL+"/home/index";
+                } else {
+                    $('.i').css('color','red');
+                    $('.i').css('transition','0.4s all ease');
+                    $('.load').hide();
+                    $('#btn-txt').show();
+                }
            }
        });
 
@@ -34,7 +49,10 @@ $(document).ready(function () {
                  action: 'logout'
              },
              success: function (res) {
-                  console.log(res);
+                
+                if (res == "ready") {
+                    location.reload();
+                }
              }
          });
   

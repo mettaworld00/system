@@ -8,7 +8,7 @@
 </div>
 
 <div class="generalContainer">
-    <form action="" onsubmit="event.preventDefault(); addSettings('<?= $_SESSION['identity']->user_id ?>','<?= $_SESSION['identity']->warehouse_id ?>');">
+    <form action="" onsubmit="event.preventDefault(); addSettings('<?= $_SESSION['identity']->user_id ?>');">
 
         <div class="container ">
 

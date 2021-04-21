@@ -12,13 +12,11 @@ class Product extends ModeloBase
 
     public function showProducts()
     {
-
-        $warehouseID = $_SESSION['identity']->warehouse_id;
-
         $query = "SELECT * FROM products p 
                 INNER JOIN status s ON p.status_id = s.status_id
                 INNER JOIN warehouses w on p.warehouse_id = w.warehouse_id
-                WHERE w.warehouse_id = '$warehouseID'";
+                LEFT JOIN products_categories pc ON p.product_id = pc.product_id
+                LEFT JOIN categories c ON pc.category_id = c.category_id";
 
         return $this->db->query($query);
     }

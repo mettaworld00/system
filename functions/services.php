@@ -1,6 +1,28 @@
 <?php
 
 require_once '../config/db.php';
+session_start();
+
+//  Eliminar producto
+
+if ($_POST['action'] == "eliminar_servicio") {
+
+  $id = $_POST['service_id'];
+
+  $db = Database::connect();
+
+  $query = "DELETE FROM service_detail WHERE service_id = '$id';";
+  $query .= "DELETE FROM services WHERE service_id = '$id';";
+
+  if ($db->multi_query($query) === TRUE) {
+
+    echo "ready";
+
+  } else {
+
+    echo "Error: " . $db->error;
+  }
+}
 
 /**
  * Generar No. Servicio
@@ -25,6 +47,7 @@ if ($_POST['action'] == "generarNoServicio") {
   }
 }
 
+// Buscar servicio
 
 if ($_POST['action'] == "buscarServicio") {
 
@@ -69,9 +92,9 @@ if ($_POST['action'] == "agregarServicio") {
 
 if ($_POST['action'] == "procesarVenta") {
 
-  $status = 3; // 3 = Pagado
+  $status = 4; // 4 = Pagado
   $customer_id = $_POST['customer_id'];
-  $user_id = $_POST['user_id'];
+  $user_id = $_SESSION['identity']->user_id;
   $payment_method = $_POST['payment_method'];
   $total_invoice = $_POST['purchase'];
   $noInvoice = $_POST['noinvoice'];
@@ -188,6 +211,7 @@ if ($_POST['action'] == "agregarCompra") {
 
  $query2 = "SELECT  *FROM service_invoices WHERE service_invoice_id = '$invoice_id'";
  $datos2 = $db->query($query2);
+ 
  $element2 = $datos2->fetch_object();
 
  $money_received = $element2->money_received; // Total recibido
@@ -281,6 +305,59 @@ function deleteInvoiceNull($invoice_id)
 
         echo "Error: " . $db->error;
       }
+  
+  } else {
+
+    echo "Error: " . $db->error;
+  }
+}
+
+
+/**
+ * Desactivar servicio
+ ----------------------------------------------*/
+
+ if ($_POST['action'] == "desactivar-servicio") {
+  $db = Database::connect();
+
+  $service_id = $_POST['service_id'];
+
+  $query = "SELECT * FROM status WHERE status_name = 'Inactivo'";
+  $datos = $db->query($query);
+
+  $element = $datos->fetch_object();
+  $statusID = $element->status_id;
+
+  $query2 = "UPDATE services SET status_id = $statusID WHERE service_id = '$service_id'";
+  if ($db->query($query2) === TRUE) {
+
+    echo "listo";
+  
+  } else {
+
+    echo "Error: " . $db->error;
+  }
+}
+
+/**
+ * Activar servicio
+ ----------------------------------------------*/
+
+ if ($_POST['action'] == "activar-servicio") {
+  $db = Database::connect();
+
+  $service_id = $_POST['service_id'];
+
+  $query = "SELECT * FROM status WHERE status_name = 'Activo'";
+  $datos = $db->query($query);
+
+  $element = $datos->fetch_object();
+  $statusID = $element->status_id;
+
+  $query2 = "UPDATE services SET status_id = $statusID WHERE service_id = '$service_id'";
+  if ($db->query($query2) === TRUE) {
+
+    echo "listo";
   
   } else {
 

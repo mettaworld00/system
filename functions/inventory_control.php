@@ -23,18 +23,18 @@ if ($_POST['action'] == "mostrarProductos") {
 if ($_POST['action'] == 'crearAjuste') {
 
   $user_id = $_POST['userID'];
-  $warehouse_id = $_POST['warehouse_id'];
   $total_setting = $_POST['total_setting'];
   $observation = $_POST['observation'];
 
   $db = Database::connect();
 
-  $query = "INSERT INTO item_settings VALUES (null,'$user_id','$warehouse_id','$total_setting','$observation',CURDATE())";
+  $query = "INSERT INTO item_settings VALUES (null,'$user_id','$total_setting','$observation',CURDATE())";
 
   if ($db->query($query) === TRUE) {
 
     $LAST_ID = $db->insert_id;
     echo $LAST_ID;
+
   } else {
 
     echo "Error: " . $db->error;
@@ -50,7 +50,7 @@ if ($_POST['action'] == "agregarDetalleAlAjustes") {
     $query = "UPDATE products SET price_in = $AVG, quantity = '$final_quantity' WHERE product_id = '$product_id';";
     if ($db->query($query) === TRUE) {
 
-      echo 1;
+      echo "ready";
     } else {
 
       echo "Error: " . $db->error;

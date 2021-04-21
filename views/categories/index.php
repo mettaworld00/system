@@ -9,6 +9,7 @@
             <a href="<?=base_url?>categories/add" class="btn btn-sm btn-secondary">Nueva Categoría</a>
         </div>
     </div>
+    <p class="title-info">Utiliza las categorías para clasificar tus productos.</p>
 </div>
 
 
@@ -28,15 +29,24 @@
       
         <tbody>
         <?php while($element = $categories->fetch_object()): ?>
+            <?php $parents = Help::verify_parent_category($element->category_id); while ($parent = $parents->fetch_object()) { ?>
+
            <tr>
                <td><?= $element->category_id?></td>
                <td><?= $element->category_name?></td>
                <td><?= $element->observation ?></td>
                <td>
-               <span onclick="deleteCategory('<?= $element->category_id ?>')" class="action-delete"><i class="fas fa-trash-alt"></i></span>
+
+               <a class="action-edit" href="<?= base_url.'categories/edit&id='.$element->category_id ?>" title="Editar"> 
+                <i class="fas fa-pencil-alt"></i>
+                </a>
+
+                <span <?php if ($parent->parent_row == 0) { ?> class="action-delete" onclick="deleteCategory('<?= $element->category_id ?>')" <?php } else { ?> class="action-delete action-disable" <?php } ?> title="Eliminar">
+                <i class="fas fa-times"></i>
+                </span>
                </td>
            </tr>
-           <?php endwhile; ?>
+           <?php  } endwhile; ?>
         </tbody>
      
     </table>

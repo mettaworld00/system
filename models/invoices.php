@@ -23,7 +23,6 @@ class Invoices extends ModeloBase
         return $this;
     }
 
-
     public function show_detalle_temp()
     {
 
@@ -34,14 +33,14 @@ class Invoices extends ModeloBase
     }
 
     public function showInvoices(){
-
+        
         $query = "SELECT 
         i.invoice_id, i.noinvoice, i.total_invoice, i.money_received, i.pending, i.expiration, i.created_at as 'date',
         c.customer_name, s.status_name
         FROM invoices i 
         INNER JOIN customers c ON i.customer_id = c.customer_id
         INNER JOIN status s ON i.status_id = s.status_id 
-        INNER JOIN payment_methods p ON i.payment_id = p.payment_id";
+        INNER JOIN payment_methods p ON i.payment_method_id = p.payment_method_id";
 
         return $this->db->query($query);
     }
