@@ -3,7 +3,9 @@ $(document).ready(function () {
     const SITE_URL = "http://localhost/sistem/";
 
 
-    // Iniciar sesiómn
+    // Iniciar sesión
+
+    $('.load').hide();
 
     $('#login').on('submit', (e)=>{
       e.preventDefault();
@@ -16,13 +18,19 @@ $(document).ready(function () {
                password: $('#userPassword').val(),
                action: 'login'
            },
+           beforeSend: function () {
+               $('#btn-txt').hide();
+               $('.load').show();
+           },
            success: function (res) {
            
                 if (res == "approved") {
-                    location.reload();
+                    location.href="/home/index";
                 } else {
                     $('.i').css('color','red');
                     $('.i').css('transition','0.4s all ease');
+                    $('.load').hide();
+                    $('#btn-txt').show();
                 }
            }
        });

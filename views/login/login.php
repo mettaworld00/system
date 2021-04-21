@@ -24,9 +24,9 @@
     </div>
 
      
-      <button type="submit" id="btn-login">
+      <button type="submit"> <div id="btn-txt">Iniciar sesión</div> 
         <div class="load">
-          <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          <div class="loadingio-spinner-pulse-gf09yprf7f8"><div class="ldio-gbaxaaxfkjf"><div></div><div></div><div></div></div></div>
         </div>
       </button>
     </form>
