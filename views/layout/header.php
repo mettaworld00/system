@@ -39,17 +39,18 @@
  
   <!-- Font-Awesome -->
 
-  <link rel="stylesheet" href="<?= base_url ?>/public/font-awesome/css/all.min.css">
-  <script src="<?= base_url ?>/public/font-awesome/js/all.min.js" text="text/javascript"></script>
+  <link rel="stylesheet" href="<?= base_url ?>/public/font-awesome/all.min.css">
+  <script src="<?= base_url ?>/public/font-awesome/all.min.js" text="text/javascript"></script>
 
   <!-- Google Fonts -->
 
   <link href="https://fonts.googleapis.com/css?family=Barlow+Condensed:400,700|PT+Sans:400,700|Cabin&display=swap" rel="stylesheet">
 
   <!-- Bootstrap4 -->
-  <script src="<?= base_url ?>/public/bootstrap4/js/bootstrap.min.js" type="text/javascript"></script>
-  <script src="<?= base_url ?>/public/bootstrap4/js/popper.min.js" type="text/javascript"></script>
-  <link rel="stylesheet" href="<?= base_url ?>/public/bootstrap4/css/bootstrap.min.css">
+  
+  <script src="<?= base_url ?>/public/bootstrap4/popper.min.js" type="text/javascript"></script>
+  <script src="<?= base_url ?>/public/bootstrap4/bootstrap.min.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="<?= base_url ?>/public/bootstrap4/bootstrap.min.css">
 
   <!-- Data Table -->
 

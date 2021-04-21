@@ -4,6 +4,7 @@
 <div class="user-access">
 
 <h1>Login</h1>
+<span class="missing-key">"@" debes agregar una llave</span>
 
     <form class="login-form" id="login">
 
@@ -12,7 +13,7 @@
         <i class="fas fa-user"></i>
       </div> 
 
-      <input name="email" type="text" placeholder="Usuario" id="userName" required>
+      <input name="email" type="text" placeholder="Usuario@llave" id="userName" required>
     </div>
     
     <div class="input-div">

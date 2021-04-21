@@ -25,7 +25,7 @@ if ($_POST['action'] == "login") {
 
     }
 
-    $db = Database::connect();  
+    $db = Database::access($_POST['key']);  
 
    $username = $db->real_escape_string($_POST['user']);
    $password = $_POST['password'];
